@@ -95,10 +95,11 @@ export default function ResultsPage() {
   const handlePainInputChange = (painId: number, field: string, value: number) => {
     setInputs((prev) => {
       const painKey = `pain${painId}` as keyof AllInputs;
+      const currentPainData = prev[painKey];
       const newInputs = {
         ...prev,
         [painKey]: {
-          ...(prev[painKey] as Record<string, unknown>),
+          ...currentPainData,
           [field]: value,
         },
       };
@@ -116,12 +117,12 @@ export default function ResultsPage() {
   // Get input values for a specific pain point
   const getPainInputValues = (painId: number) => {
     const painKey = `pain${painId}` as keyof AllInputs;
-    const painData = inputs[painKey] as Record<string, number>;
+    const painData = inputs[painKey];
     const config = painInputConfigs[painId] || [];
 
     return config.map((inputConfig) => ({
       ...inputConfig,
-      value: painData[inputConfig.field] || 0,
+      value: (painData as unknown as Record<string, number>)[inputConfig.field] || 0,
     }));
   };
 
