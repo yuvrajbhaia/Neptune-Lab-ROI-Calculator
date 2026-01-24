@@ -15,10 +15,13 @@ export function Header() {
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
-          {/* Placeholder for logo - replace with actual logo */}
-          <div className="w-10 h-10 bg-[#E07A5F] rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">N</span>
-          </div>
+          <Image
+            src="/neptune-logo.png"
+            alt="Neptune Plastics"
+            width={40}
+            height={40}
+            className="rounded-lg object-contain"
+          />
           <div className="hidden sm:block">
             <div className="font-semibold text-[#1A1A1A]">Neptune Plastics</div>
             <div className="text-xs text-[#6B7280]">Est. 1968</div>

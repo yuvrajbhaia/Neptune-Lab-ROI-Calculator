@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { AllInputs, defaultInputs } from "@/lib/calculations";
 import Link from "next/link";
+import Image from "next/image";
 
 // Step configuration - Only factory settings now
 const steps = [
@@ -145,9 +146,13 @@ export default function CalculatorPage() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#E5E7EB]">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#E07A5F] rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">N</span>
-            </div>
+            <Image
+              src="/neptune-logo.png"
+              alt="Neptune Plastics"
+              width={40}
+              height={40}
+              className="rounded-lg object-contain"
+            />
             <div className="hidden sm:block">
               <div className="font-semibold text-[#1A1A1A]">Neptune Plastics</div>
             </div>
