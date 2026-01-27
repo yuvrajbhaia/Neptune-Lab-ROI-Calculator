@@ -149,8 +149,8 @@ export default function CalculatorPage() {
             <Image
               src="/neptune-logo.png"
               alt="Neptune Plastics"
-              width={40}
-              height={40}
+              width={80}
+              height={80}
               className="rounded-lg object-contain"
             />
             <div className="hidden sm:block">

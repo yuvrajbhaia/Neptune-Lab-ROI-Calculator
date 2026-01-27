@@ -134,23 +134,15 @@ export default function ResultsPage() {
     setLeadData(data);
 
     try {
-      // Submit to API
-      const response = await fetch("/api/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          lead: data,
-          inputs,
-          results,
-          total,
-        }),
-      });
+      // TODO: Re-enable API submission once Cloudflare Workers integration is set up
+      // For now, just log the data to console
+      console.log("=== ROI Calculator Submission (Client-side) ===");
+      console.log("Lead:", data);
+      console.log("Total Annual Impact:", total);
+      console.log("Selected Pain Points:", results.filter((r) => r.isSelected).length);
 
-      if (!response.ok) {
-        throw new Error("Failed to submit");
-      }
+      // Simulate API delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Reveal the total
       setIsRevealed(true);
@@ -174,8 +166,8 @@ export default function ResultsPage() {
             <Image
               src="/neptune-logo.png"
               alt="Neptune Plastics"
-              width={40}
-              height={40}
+              width={80}
+              height={80}
               className="rounded-lg object-contain"
             />
             <div className="hidden sm:block">

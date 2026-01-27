@@ -7,58 +7,48 @@ import Link from "next/link";
 
 export function Hero() {
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center px-4 py-20">
-      {/* Background pattern */}
-      <div className="absolute inset-0 bg-[#2D2D2D] dot-pattern opacity-[0.03]" />
-
-      <div className="relative z-10 max-w-4xl mx-auto text-center">
+    <section className="pt-32 pb-20 px-6">
+      <div className="max-w-4xl mx-auto">
+        {/* Main Content */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
         >
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-[#E07A5F]/10 text-[#E07A5F] px-4 py-2 rounded-full text-sm font-medium mb-8">
-            <span className="w-2 h-2 bg-[#E07A5F] rounded-full animate-pulse" />
-            ROI Calculator for Masterbatch Industry
-          </div>
-        </motion.div>
+          {/* Small label */}
+          <p className="text-sm text-gray-500 uppercase tracking-widest mb-6">
+            For Masterbatch Manufacturers
+          </p>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1A1A1A] leading-tight mb-6"
-        >
-          Calculate Your Savings with the{" "}
-          <span className="text-[#E07A5F]">25mm Lab Raffia Tape Line</span>
-        </motion.h1>
+          {/* Main Headline */}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-gray-900 leading-[1.1] mb-6">
+            Stop losing money on
+            <br />
+            <span className="text-[#E07A5F]">production trials</span>
+          </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-lg md:text-xl text-[#6B7280] max-w-2xl mx-auto mb-10"
-        >
-          Discover how much you could save annually by eliminating production trial waste,
-          enabling R&D innovation, and reducing material costs.
-        </motion.p>
+          {/* Subheadline */}
+          <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+            Our 25mm Lab Raffia Tape Line helps you test colors, pigments, and
+            materials without disrupting your main production.
+          </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
+          {/* CTA Button */}
           <Link href="/calculator">
-            <Button size="lg" className="group">
-              Calculate Your ROI
+            <Button
+              size="lg"
+              className="bg-[#E07A5F] hover:bg-[#C96A51] text-white font-medium px-8 py-6 text-base h-auto group"
+            >
+              Calculate Your Savings
               <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
-          <Button variant="outline" size="lg">
-            Learn More
-          </Button>
+
+          {/* Trust indicator */}
+          <p className="text-sm text-gray-400 mt-6">
+            Takes 2 minutes. No signup required.
+          </p>
         </motion.div>
       </div>
     </section>
