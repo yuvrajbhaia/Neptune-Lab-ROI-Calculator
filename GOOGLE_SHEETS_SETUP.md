@@ -16,15 +16,29 @@ When a user submits the ROI calculator form, their data (name, email, phone, com
 2. Click **+ Blank** to create a new spreadsheet
 3. Rename it to something like "Neptune ROI Calculator Leads"
 4. **Add these column headers in Row 1:**
-   - A1: `Timestamp`
-   - B1: `Name`
-   - C1: `Email`
-   - D1: `Phone`
-   - E1: `Company`
-   - F1: `Total Annual Impact`
-   - G1: `Selected Pain Points`
-   - H1: `Pain Point Details`
-   - I1: `Raw Inputs`
+
+   **Easiest Method:** Copy the text below and paste into cell A1 (it's tab-separated so will fill all columns):
+   ```
+   Timestamp	Name	Email	Phone	Company	Total Annual Impact	Output Per Hour (kg/hr)	Working Hours Per Day	Working Days Per Month	Material Cost Per Kg (₹)	Processing Cost Per Kg (₹)	Pain 1 Selected	Pain 1 Annual Loss	Pain 1 Monthly Loss	Pain 1 - Rejected Trials/Month	Pain 1 - Run Time Per Batch (hrs)	Pain 2 Selected	Pain 2 Annual Loss	Pain 2 Monthly Loss	Pain 2 - Pigment Savings Per Kg (₹)	Pain 3 Selected	Pain 3 Annual Loss	Pain 3 Monthly Loss	Pain 3 - Small Batch Requests/Year	Pain 3 - Loss Per Case (₹)	Pain 4 Selected	Pain 4 Annual Loss	Pain 4 Monthly Loss	Pain 4 - Experiment Requests/Year	Pain 4 - Loss Per Case (₹)	Pain 5 Selected	Pain 5 Annual Loss	Pain 5 Monthly Loss	Pain 5 - Recycled Material Savings Per Kg (₹)	Pain 5 - Number of Machines	Pain 6 Selected	Pain 6 Annual Loss	Pain 6 Monthly Loss	Pain 6 - Peak Season Requests/Year	Pain 6 - Loss Per Case (₹)
+   ```
+
+   **Or manually enter these headers:**
+
+   **Lead Info (A-F):** Timestamp | Name | Email | Phone | Company | Total Annual Impact
+
+   **Factory Settings (G-K):** Output Per Hour (kg/hr) | Working Hours Per Day | Working Days Per Month | Material Cost Per Kg (₹) | Processing Cost Per Kg (₹)
+
+   **Pain 1 - Color Rejection (L-P):** Pain 1 Selected | Pain 1 Annual Loss | Pain 1 Monthly Loss | Pain 1 - Rejected Trials/Month | Pain 1 - Run Time Per Batch (hrs)
+
+   **Pain 2 - R&D Pigments (Q-T):** Pain 2 Selected | Pain 2 Annual Loss | Pain 2 Monthly Loss | Pain 2 - Pigment Savings Per Kg (₹)
+
+   **Pain 3 - Small Batch Trials (U-Y):** Pain 3 Selected | Pain 3 Annual Loss | Pain 3 Monthly Loss | Pain 3 - Small Batch Requests/Year | Pain 3 - Loss Per Case (₹)
+
+   **Pain 4 - Lab Experiments (Z-AD):** Pain 4 Selected | Pain 4 Annual Loss | Pain 4 Monthly Loss | Pain 4 - Experiment Requests/Year | Pain 4 - Loss Per Case (₹)
+
+   **Pain 5 - Recycled Material (AE-AI):** Pain 5 Selected | Pain 5 Annual Loss | Pain 5 Monthly Loss | Pain 5 - Recycled Material Savings Per Kg (₹) | Pain 5 - Number of Machines
+
+   **Pain 6 - Peak Season Trials (AJ-AN):** Pain 6 Selected | Pain 6 Annual Loss | Pain 6 Monthly Loss | Pain 6 - Peak Season Requests/Year | Pain 6 - Loss Per Case (₹)
 
 5. **Copy the Spreadsheet ID:**
    - Look at the URL: `https://docs.google.com/spreadsheets/d/1ABC123xyz.../edit`
@@ -160,10 +174,13 @@ git push
 ## Data Privacy & Security
 
 **What data is collected:**
-- Name, email, phone, company name
+- Lead contact info: Name, email, phone, company name
 - Total annual impact (calculated savings)
-- Selected pain points and their details
-- Raw calculator inputs (JSON format)
+- Factory settings: All 5 parameters (output, hours, days, costs)
+- For EACH pain point (6 total):
+  - Whether it was selected
+  - Annual and monthly loss amounts
+  - Every adjustable parameter the user modified
 
 **Best Practices:**
 - Keep your Spreadsheet ID and API key secret
@@ -176,19 +193,64 @@ git push
 
 ## What Gets Saved
 
-Each form submission creates a new row with these columns:
+Each form submission creates a new row with **40 columns** of detailed data:
 
-| Column | Example |
-|--------|---------|
-| Timestamp | 2026-01-27T10:30:45.123Z |
-| Name | Rajesh Kumar |
-| Email | rajesh@example.com |
-| Phone | +91 98765 43210 |
-| Company | ABC Plastics Ltd |
-| Total Annual Impact | 5000000 |
-| Selected Pain Points | 3 |
-| Pain Point Details | Batch Rejections: ₹2,000,000 \| Pigment Waste: ₹1,500,000 \| Small Batches: ₹1,500,000 |
-| Raw Inputs | {"pain1":{"rejectedTrialsPerMonth":5,...},...} |
+### Lead Information (6 columns)
+- Timestamp, Name, Email, Phone, Company, Total Annual Impact
+
+### Factory Settings (5 columns)
+Every parameter the user set for their factory:
+- Output per hour (kg/hr)
+- Working hours per day
+- Working days per month
+- Material cost per kg
+- Processing cost per kg
+
+### Pain Point 1: Color Rejection After Stretching (5 columns)
+- Selected (YES/NO)
+- Annual loss calculated
+- Monthly loss calculated
+- Rejected trials per month (user input)
+- Run time per batch (user input)
+
+### Pain Point 2: R&D on New Pigments (4 columns)
+- Selected (YES/NO)
+- Annual loss calculated
+- Monthly loss calculated
+- Pigment savings per kg (user input)
+
+### Pain Point 3: Small Batch Customer Trials (5 columns)
+- Selected (YES/NO)
+- Annual loss calculated
+- Monthly loss calculated
+- Small batch requests per year (user input)
+- Loss per case (user input)
+
+### Pain Point 4: Lab In-charge Experiments (5 columns)
+- Selected (YES/NO)
+- Annual loss calculated
+- Monthly loss calculated
+- Experiment requests per year (user input)
+- Loss per case (user input)
+
+### Pain Point 5: Recycled Material Testing (5 columns)
+- Selected (YES/NO)
+- Annual loss calculated
+- Monthly loss calculated
+- Recycled material savings per kg (user input)
+- Number of machines (user input)
+
+### Pain Point 6: Peak Season Customer Trials (5 columns)
+- Selected (YES/NO)
+- Annual loss calculated
+- Monthly loss calculated
+- Peak season requests per year (user input)
+- Loss per case (user input)
+
+**Example Row:**
+```
+2026-01-27T10:30:45.123Z | Rajesh Kumar | rajesh@example.com | +91 98765 43210 | ABC Plastics Ltd | 5000000 | 200 | 22 | 25 | 100 | 10 | YES | 2376000 | 198000 | 1 | 3 | YES | 1320000 | 110000 | 1 | YES | 75000 | 6250 | 3 | 25000 | NO | 0 | 0 | 0 | 0 | YES | 1320000 | 110000 | 1 | 1 | NO | 0 | 0 | 0 | 0
+```
 
 ---
 
