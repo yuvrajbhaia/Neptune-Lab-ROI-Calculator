@@ -134,22 +134,33 @@ export default function ResultsPage() {
     setLeadData(data);
 
     try {
-      // TODO: Re-enable API submission once Cloudflare Workers integration is set up
-      // For now, just log the data to console
-      console.log("=== ROI Calculator Submission (Client-side) ===");
-      console.log("Lead:", data);
-      console.log("Total Annual Impact:", total);
-      console.log("Selected Pain Points:", results.filter((r) => r.isSelected).length);
+      // Submit to Cloudflare Worker API
+      const response = await fetch("/api/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          lead: data,
+          inputs,
+          results,
+          total,
+        }),
+      });
 
-      // Simulate API delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (!response.ok) {
+        throw new Error("Failed to submit");
+      }
+
+      const result = await response.json();
+      console.log("✅ Submission successful:", result);
 
       // Reveal the total
       setIsRevealed(true);
       setIsSubmitted(true);
     } catch (error) {
       console.error("Submission error:", error);
-      // Still reveal for demo purposes
+      // Still reveal for demo purposes (graceful degradation)
       setIsRevealed(true);
       setIsSubmitted(true);
     } finally {
