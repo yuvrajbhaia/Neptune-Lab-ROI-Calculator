@@ -114,6 +114,9 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     );
 
     // Append to Google Sheets if credentials are configured
+    let sheetsStatus = "not_configured";
+    let sheetsError = null;
+
     if (env.GOOGLE_SHEETS_API_KEY && env.GOOGLE_SHEETS_SPREADSHEET_ID) {
       try {
         await appendToGoogleSheet(env, {
@@ -124,8 +127,11 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
           timestamp: new Date().toISOString(),
         });
         console.log("✅ Successfully saved to Google Sheets");
+        sheetsStatus = "success";
       } catch (sheetError) {
         console.error("❌ Google Sheets error:", sheetError);
+        sheetsStatus = "failed";
+        sheetsError = sheetError instanceof Error ? sheetError.message : String(sheetError);
         // Don't fail the request if Sheets fails
       }
     } else {
@@ -141,6 +147,8 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       JSON.stringify({
         success: true,
         message: "Form submitted successfully",
+        sheets_status: sheetsStatus,
+        sheets_error: sheetsError,
       }),
       {
         status: 200,
