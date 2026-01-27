@@ -1,6 +1,5 @@
-name = "neptune-roi"
+name = "neptune-lab-roi-calculator"
 compatibility_date = "2024-01-01"
 
 # Cloudflare Pages configuration for Next.js
-[build]
-command = "npm run build"
+pages_build_output_dir = ".next"
