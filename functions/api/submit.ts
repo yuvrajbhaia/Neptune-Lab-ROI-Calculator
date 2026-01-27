@@ -2,8 +2,7 @@
 // This replaces the Next.js API route for static exports
 
 interface Env {
-  GOOGLE_SHEETS_API_KEY: string;
-  GOOGLE_SHEETS_SPREADSHEET_ID: string;
+  GOOGLE_APPS_SCRIPT_URL: string; // Apps Script Web App deployment URL
 }
 
 interface FactorySettings {
@@ -113,29 +112,29 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
       results.filter((r) => r.isSelected).length
     );
 
-    // Append to Google Sheets if credentials are configured
+    // Append to Google Sheets via Apps Script webhook
     let sheetsStatus = "not_configured";
     let sheetsError = null;
 
-    if (env.GOOGLE_SHEETS_API_KEY && env.GOOGLE_SHEETS_SPREADSHEET_ID) {
+    if (env.GOOGLE_APPS_SCRIPT_URL) {
       try {
-        await appendToGoogleSheet(env, {
+        await sendToAppsScript(env.GOOGLE_APPS_SCRIPT_URL, {
           lead,
           inputs,
           results,
           total,
           timestamp: new Date().toISOString(),
         });
-        console.log("✅ Successfully saved to Google Sheets");
+        console.log("✅ Successfully saved to Google Sheets via Apps Script");
         sheetsStatus = "success";
       } catch (sheetError) {
-        console.error("❌ Google Sheets error:", sheetError);
+        console.error("❌ Apps Script webhook error:", sheetError);
         sheetsStatus = "failed";
         sheetsError = sheetError instanceof Error ? sheetError.message : String(sheetError);
-        // Don't fail the request if Sheets fails
+        // Don't fail the request if Sheets fails (graceful degradation)
       }
     } else {
-      console.log("⚠️ Google Sheets not configured - skipping");
+      console.log("⚠️ Apps Script webhook not configured - skipping");
     }
 
     // TODO: Add Resend email integration here
@@ -170,9 +169,9 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
   }
 }
 
-// Append data to Google Sheets using Google Sheets API v4
-async function appendToGoogleSheet(
-  env: Env,
+// Send data to Google Apps Script webhook (same approach as your working HTML example)
+async function sendToAppsScript(
+  webhookUrl: string,
   data: {
     lead: { name: string; email: string; phone: string; company: string };
     inputs: AllInputs;
@@ -181,7 +180,6 @@ async function appendToGoogleSheet(
     timestamp: string;
   }
 ) {
-  const { GOOGLE_SHEETS_API_KEY, GOOGLE_SHEETS_SPREADSHEET_ID } = env;
   const { lead, inputs, results, total, timestamp } = data;
 
   // Helper to get pain point data
@@ -201,86 +199,44 @@ async function appendToGoogleSheet(
   const pain5 = getPainData(5);
   const pain6 = getPainData(6);
 
-  // Prepare row data with ALL details
-  const values = [
-    [
-      // Submission Info
-      timestamp,
-      lead.name,
-      lead.email,
-      lead.phone,
-      lead.company,
-      total,
+  // Build payload in the format the Apps Script expects
+  const payload = {
+    timestamp,
+    lead,
+    total,
+    inputs,
+    pain1,
+    pain2,
+    pain3,
+    pain4,
+    pain5,
+    pain6,
+  };
 
-      // Factory Settings
-      inputs.factory.outputPerHour,
-      inputs.factory.workingHoursPerDay,
-      inputs.factory.workingDaysPerMonth,
-      inputs.factory.materialCostPerKg,
-      inputs.factory.processingCostPerKg,
-
-      // Pain 1: Color Rejection After Stretching
-      pain1.selected,
-      pain1.annualLoss,
-      pain1.monthlyLoss,
-      inputs.pain1.rejectedTrialsPerMonth,
-      inputs.pain1.runTimePerBatch,
-
-      // Pain 2: R&D on New Pigments
-      pain2.selected,
-      pain2.annualLoss,
-      pain2.monthlyLoss,
-      inputs.pain2.pigmentSavingsPerKg,
-
-      // Pain 3: Small Batch Customer Trials
-      pain3.selected,
-      pain3.annualLoss,
-      pain3.monthlyLoss,
-      inputs.pain3.smallBatchRequestsPerYear,
-      inputs.pain3.lossPerCase,
-
-      // Pain 4: Lab In-charge Experiments
-      pain4.selected,
-      pain4.annualLoss,
-      pain4.monthlyLoss,
-      inputs.pain4.experimentRequestsPerYear,
-      inputs.pain4.lossPerCase,
-
-      // Pain 5: Recycled Material Testing
-      pain5.selected,
-      pain5.annualLoss,
-      pain5.monthlyLoss,
-      inputs.pain5.recycledMaterialSavingsPerKg,
-      inputs.pain5.numberOfMachines,
-
-      // Pain 6: Peak Season Customer Trials
-      pain6.selected,
-      pain6.annualLoss,
-      pain6.monthlyLoss,
-      inputs.pain6.peakSeasonRequestsPerYear,
-      inputs.pain6.lossPerCase,
-    ],
-  ];
-
-  // Google Sheets API endpoint - now uses columns A to AO (41 columns)
-  const url = `https://sheets.googleapis.com/v4/spreadsheets/${GOOGLE_SHEETS_SPREADSHEET_ID}/values/Sheet1!A:AO:append?valueInputOption=RAW&key=${GOOGLE_SHEETS_API_KEY}`;
-
-  const response = await fetch(url, {
+  // Send to Apps Script webhook
+  // Using same approach as your working HTML example
+  const response = await fetch(webhookUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      values,
-    }),
+    body: JSON.stringify(payload),
   });
 
-  if (!response.ok) {
-    const errorText = await response.text();
+  // Apps Script returns 302 redirect on success, which is normal
+  // Check if response is ok (2xx or 3xx status codes)
+  if (!response.ok && response.status !== 302) {
+    const errorText = await response.text().catch(() => "Unable to read error");
     throw new Error(
-      `Google Sheets API error: ${response.status} - ${errorText}`
+      `Apps Script webhook error: ${response.status} - ${errorText}`
     );
   }
 
-  return await response.json();
+  // Try to parse JSON response (Apps Script returns JSON on success)
+  try {
+    return await response.json();
+  } catch {
+    // If can't parse JSON, it's likely a redirect which is fine
+    return { success: true, message: "Data sent successfully" };
+  }
 }
