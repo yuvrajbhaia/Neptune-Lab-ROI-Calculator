@@ -221,13 +221,18 @@ export default function ResultsPage() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white rounded-xl border border-[#E5E7EB] p-6 mb-12"
+          className="bg-gradient-to-br from-white to-gray-50 rounded-2xl border-2 border-[#E5E7EB] p-8 mb-12 shadow-sm"
         >
-          <h2 className="text-lg font-semibold text-[#1A1A1A] mb-4">Your Factory Settings</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-[#E07A5F]/10 rounded-xl flex items-center justify-center">
+              <span className="text-xl">⚙️</span>
+            </div>
+            <h2 className="text-xl font-bold text-[#1A1A1A]">Your Factory Settings</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             <div>
-              <label className="block text-sm text-[#6B7280] mb-2">Output per hour</label>
-              <div className="relative">
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">Output per hour</label>
+              <div className="relative group">
                 <input
                   type="number"
                   value={inputs.factory.outputPerHour}
@@ -239,14 +244,16 @@ export default function ResultsPage() {
                     setInputs(newInputs);
                     recalculateResults(newInputs);
                   }}
-                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
+                  className="w-full pl-4 pr-16 py-3 text-base font-semibold text-[#1A1A1A] bg-white border-2 border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F] transition-all group-hover:border-[#E07A5F]/50"
                 />
-                <span className="absolute right-3 top-2 text-sm text-[#6B7280]">kg/hr</span>
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-[#9CA3AF] pointer-events-none">
+                  kg/hr
+                </span>
               </div>
             </div>
             <div>
-              <label className="block text-sm text-[#6B7280] mb-2">Working hours/day</label>
-              <div className="relative">
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">Working hours/day</label>
+              <div className="relative group">
                 <input
                   type="number"
                   value={inputs.factory.workingHoursPerDay}
@@ -258,14 +265,16 @@ export default function ResultsPage() {
                     setInputs(newInputs);
                     recalculateResults(newInputs);
                   }}
-                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
+                  className="w-full pl-4 pr-12 py-3 text-base font-semibold text-[#1A1A1A] bg-white border-2 border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F] transition-all group-hover:border-[#E07A5F]/50"
                 />
-                <span className="absolute right-3 top-2 text-sm text-[#6B7280]">hrs</span>
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-[#9CA3AF] pointer-events-none">
+                  hrs
+                </span>
               </div>
             </div>
             <div>
-              <label className="block text-sm text-[#6B7280] mb-2">Working days/month</label>
-              <div className="relative">
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">Working days/month</label>
+              <div className="relative group">
                 <input
                   type="number"
                   value={inputs.factory.workingDaysPerMonth}
@@ -277,15 +286,19 @@ export default function ResultsPage() {
                     setInputs(newInputs);
                     recalculateResults(newInputs);
                   }}
-                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
+                  className="w-full pl-4 pr-14 py-3 text-base font-semibold text-[#1A1A1A] bg-white border-2 border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F] transition-all group-hover:border-[#E07A5F]/50"
                 />
-                <span className="absolute right-3 top-2 text-sm text-[#6B7280]">days</span>
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-[#9CA3AF] pointer-events-none">
+                  days
+                </span>
               </div>
             </div>
             <div>
-              <label className="block text-sm text-[#6B7280] mb-2">Material cost/kg</label>
-              <div className="relative">
-                <span className="absolute left-3 top-2 text-sm text-[#6B7280]">₹</span>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">Material cost/kg</label>
+              <div className="relative group">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-base font-semibold text-[#9CA3AF] pointer-events-none">
+                  ₹
+                </span>
                 <input
                   type="number"
                   value={inputs.factory.materialCostPerKg}
@@ -297,14 +310,16 @@ export default function ResultsPage() {
                     setInputs(newInputs);
                     recalculateResults(newInputs);
                   }}
-                  className="w-full pl-8 pr-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 text-base font-semibold text-[#1A1A1A] bg-white border-2 border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F] transition-all group-hover:border-[#E07A5F]/50"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm text-[#6B7280] mb-2">Processing cost/kg</label>
-              <div className="relative">
-                <span className="absolute left-3 top-2 text-sm text-[#6B7280]">₹</span>
+              <label className="block text-sm font-medium text-[#1A1A1A] mb-2">Processing cost/kg</label>
+              <div className="relative group">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-base font-semibold text-[#9CA3AF] pointer-events-none">
+                  ₹
+                </span>
                 <input
                   type="number"
                   value={inputs.factory.processingCostPerKg}
@@ -316,7 +331,7 @@ export default function ResultsPage() {
                     setInputs(newInputs);
                     recalculateResults(newInputs);
                   }}
-                  className="w-full pl-8 pr-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 text-base font-semibold text-[#1A1A1A] bg-white border-2 border-[#E5E7EB] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F] transition-all group-hover:border-[#E07A5F]/50"
                 />
               </div>
             </div>
