@@ -179,6 +179,14 @@ export function calculateAllPains(inputs: AllInputs): PainResult[] {
       isSelected: true,
     },
     {
+      id: 5,
+      title: "Competitive Pressure & Recycled Material",
+      description: "Profit lost to competitors who tested and adopted recycled material blends while you couldn't",
+      annualLoss: pain5Result.annual,
+      monthlyLoss: pain5Result.monthly,
+      isSelected: true,
+    },
+    {
       id: 3,
       title: "Small Batch Customer Trials",
       description: "Material wastage or lost customers when you can't produce small 5-10 kg trial quantities",
@@ -192,14 +200,6 @@ export function calculateAllPains(inputs: AllInputs): PainResult[] {
       description: "Cost savings and improvements never realized because experiments require stopping production",
       annualLoss: pain4Result.annual,
       monthlyLoss: pain4Result.monthly,
-      isSelected: true,
-    },
-    {
-      id: 5,
-      title: "Competitive Pressure & Recycled Material",
-      description: "Profit lost to competitors who tested and adopted recycled material blends while you couldn't",
-      annualLoss: pain5Result.annual,
-      monthlyLoss: pain5Result.monthly,
       isSelected: true,
     },
     {
