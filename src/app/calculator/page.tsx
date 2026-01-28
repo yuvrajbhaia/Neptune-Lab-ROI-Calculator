@@ -166,15 +166,15 @@ export default function CalculatorPage() {
   return (
     <main className="min-h-screen bg-white">
       {/* Header */}
-      <header className="py-4 px-4 border-b border-gray-200">
+      <header className="py-3 sm:py-4 px-4 border-b border-gray-200">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
             <Image
               src="/neptune-logo.png"
               alt="Neptune Plastics"
-              width={50}
-              height={50}
-              className="rounded-lg object-contain transition-transform group-hover:scale-105"
+              width={45}
+              height={45}
+              className="rounded-lg object-contain transition-transform group-hover:scale-105 sm:w-[50px] sm:h-[50px]"
             />
             <div className="hidden sm:block">
               <div className="font-semibold text-[#1A1A1A]">Neptune Plastics</div>
@@ -183,7 +183,7 @@ export default function CalculatorPage() {
           </Link>
           <button
             onClick={() => router.push("/")}
-            className="text-gray-500 hover:text-gray-700 transition-colors text-sm"
+            className="text-gray-500 hover:text-gray-700 transition-colors text-xs sm:text-sm px-2 sm:px-3"
           >
             Exit
           </button>
@@ -191,19 +191,19 @@ export default function CalculatorPage() {
       </header>
 
       {/* Step Content */}
-      <div className="min-h-[calc(100vh-100px)] flex items-center justify-center p-4">
+      <div className="min-h-[calc(100vh-80px)] sm:min-h-[calc(100vh-100px)] flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           {/* Single card container - doesn't unmount */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+          <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-200 p-5 sm:p-6">
             {/* Icon - changes without unmounting card */}
             <motion.div
               key={`icon-${currentStep}`}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.2 }}
-              className="w-14 h-14 bg-[#E07A5F] rounded-xl flex items-center justify-center mb-4"
+              className="w-12 h-12 sm:w-14 sm:h-14 bg-[#E07A5F] rounded-xl flex items-center justify-center mb-3 sm:mb-4"
             >
-              <Icon className="w-7 h-7 text-white" />
+              <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
             </motion.div>
 
             {/* Title - smooth transition */}
@@ -214,7 +214,7 @@ export default function CalculatorPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2 }}
-                className="text-2xl font-bold text-[#1A1A1A] mb-2"
+                className="text-xl sm:text-2xl font-bold text-[#1A1A1A] mb-2"
               >
                 {step.title}
               </motion.h2>
@@ -228,7 +228,7 @@ export default function CalculatorPage() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.2, delay: 0.05 }}
-                className="text-gray-600 mb-6 text-sm"
+                className="text-gray-600 mb-5 sm:mb-6 text-sm"
               >
                 {step.description}
               </motion.p>
@@ -242,11 +242,11 @@ export default function CalculatorPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2, delay: 0.1 }}
-                className="mb-6"
+                className="mb-5 sm:mb-6"
               >
                 <div className="relative">
                   {step.prefix && (
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl font-bold text-gray-400 pointer-events-none">
+                    <span className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-lg sm:text-xl font-bold text-gray-400 pointer-events-none">
                       {step.prefix}
                     </span>
                   )}
@@ -257,10 +257,10 @@ export default function CalculatorPage() {
                     onKeyDown={handleKeyDown}
                     placeholder={step.placeholder}
                     autoFocus
-                    className={`w-full ${step.prefix ? 'pl-10' : 'pl-4'} ${step.suffix ? 'pr-20' : 'pr-4'} py-4 text-3xl font-bold text-[#1A1A1A] bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/30 focus:border-[#E07A5F] transition-all text-center`}
+                    className={`w-full ${step.prefix ? 'pl-8 sm:pl-10' : 'pl-3 sm:pl-4'} ${step.suffix ? 'pr-16 sm:pr-20' : 'pr-3 sm:pr-4'} py-3 sm:py-4 text-2xl sm:text-3xl font-bold text-[#1A1A1A] bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/30 focus:border-[#E07A5F] transition-all text-center`}
                   />
                   {step.suffix && (
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-base font-semibold text-gray-400 pointer-events-none">
+                    <span className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-sm sm:text-base font-semibold text-gray-400 pointer-events-none">
                       {step.suffix}
                     </span>
                   )}

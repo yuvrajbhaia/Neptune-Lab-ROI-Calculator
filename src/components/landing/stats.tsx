@@ -10,9 +10,9 @@ const stats = [
 
 export function Stats() {
   return (
-    <section className="py-20 px-6 border-t border-gray-100">
+    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 border-t border-gray-100">
       <div className="max-w-4xl mx-auto">
-        <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -20,9 +20,9 @@ export function Stats() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="text-center py-4 sm:py-0"
             >
-              <div className="text-4xl md:text-5xl font-semibold text-gray-900 mb-2">
+              <div className="text-3xl sm:text-4xl md:text-5xl font-semibold text-gray-900 mb-2">
                 {stat.value}
               </div>
               <div className="text-sm text-gray-500">
