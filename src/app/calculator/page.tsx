@@ -246,7 +246,7 @@ export default function CalculatorPage() {
               >
                 <div className="relative">
                   {step.prefix && (
-                    <span className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-lg sm:text-xl font-bold text-gray-400 pointer-events-none">
+                    <span className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 text-lg sm:text-xl font-bold text-gray-400 pointer-events-none">
                       {step.prefix}
                     </span>
                   )}
@@ -257,10 +257,10 @@ export default function CalculatorPage() {
                     onKeyDown={handleKeyDown}
                     placeholder={step.placeholder}
                     autoFocus
-                    className={`w-full ${step.prefix ? 'pl-8 sm:pl-10' : 'pl-3 sm:pl-4'} ${step.suffix ? 'pr-16 sm:pr-20' : 'pr-3 sm:pr-4'} py-3 sm:py-4 text-2xl sm:text-3xl font-bold text-[#1A1A1A] bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/30 focus:border-[#E07A5F] transition-all text-center`}
+                    className={`w-full ${step.prefix ? 'pl-10 sm:pl-12' : 'pl-4'} ${step.suffix ? 'pr-24 sm:pr-32' : 'pr-4'} py-3 sm:py-4 text-2xl sm:text-3xl font-bold text-[#1A1A1A] bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/30 focus:border-[#E07A5F] transition-all`}
                   />
                   {step.suffix && (
-                    <span className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-sm sm:text-base font-semibold text-gray-400 pointer-events-none">
+                    <span className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 text-sm sm:text-base font-semibold text-gray-400 pointer-events-none whitespace-nowrap">
                       {step.suffix}
                     </span>
                   )}
