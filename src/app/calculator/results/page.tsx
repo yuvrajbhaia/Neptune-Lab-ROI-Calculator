@@ -73,14 +73,22 @@ export default function ResultsPage() {
 
   useEffect(() => {
     // Load inputs from localStorage
-    const savedInputs = localStorage.getItem("calculatorInputs");
-    if (savedInputs) {
-      const parsedInputs = JSON.parse(savedInputs) as AllInputs;
-      setInputs(parsedInputs);
-      const calculatedResults = calculateAllPains(parsedInputs);
-      setResults(calculatedResults);
-    } else {
-      // Redirect to calculator if no inputs found
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const savedInputs = localStorage.getItem("calculatorInputs");
+        if (savedInputs) {
+          const parsedInputs = JSON.parse(savedInputs) as AllInputs;
+          setInputs(parsedInputs);
+          const calculatedResults = calculateAllPains(parsedInputs);
+          setResults(calculatedResults);
+        } else {
+          // Redirect to calculator if no inputs found
+          router.push("/calculator");
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load calculator inputs:", error);
+      // Redirect to calculator on error
       router.push("/calculator");
     }
   }, [router]);

@@ -85,15 +85,22 @@ export default function CalculatorPage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [inputs, setInputs] = useState<AllInputs>(defaultInputs);
   const [currentValue, setCurrentValue] = useState<string>("");
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted before accessing client-side features
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const step = steps[currentStep];
   const Icon = step.icon;
 
   // Initialize current value when step changes
   useEffect(() => {
+    if (!mounted) return;
     const value = inputs.factory[step.field as keyof typeof inputs.factory];
     setCurrentValue(value?.toString() || step.defaultValue.toString());
-  }, [currentStep, step, inputs]);
+  }, [currentStep, step, inputs, mounted]);
 
   const updateInput = (value: number) => {
     setInputs((prev) => ({
@@ -119,8 +126,16 @@ export default function CalculatorPage() {
         [step.field]: numValue,
       };
 
-      localStorage.setItem("calculatorInputs", JSON.stringify(finalInputs));
-      router.push("/calculator/results");
+      try {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          localStorage.setItem("calculatorInputs", JSON.stringify(finalInputs));
+        }
+        router.push("/calculator/results");
+      } catch (error) {
+        console.error("Failed to save inputs:", error);
+        // Still navigate even if localStorage fails
+        router.push("/calculator/results");
+      }
     }
   };
 
@@ -139,6 +154,18 @@ export default function CalculatorPage() {
   };
 
   const isValidInput = currentValue.trim() !== "" && !isNaN(parseFloat(currentValue));
+
+  // Don't render until mounted to avoid hydration issues
+  if (!mounted) {
+    return (
+      <main className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[#E07A5F] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-[#6B7280]">Loading calculator...</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-white">
