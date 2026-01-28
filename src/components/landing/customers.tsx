@@ -23,19 +23,19 @@ export function Customers() {
           Trusted by industry leaders
         </p>
 
-        <InfiniteSlider gap={120} duration={50} className="py-10">
+        <InfiniteSlider gap={80} duration={45} className="py-8">
           {logos.map((logo) => (
             <div
               key={logo.alt}
-              className="flex items-center justify-center px-10"
+              className="flex items-center justify-center px-6"
               style={{ filter: 'none', opacity: 1 }}
             >
               <Image
                 src={logo.src}
                 alt={logo.alt}
-                width={280}
-                height={140}
-                className="h-[140px] w-auto object-contain brightness-100 contrast-100 saturate-100"
+                width={140}
+                height={70}
+                className="h-[70px] w-auto object-contain brightness-100 contrast-100 saturate-100"
                 style={{ filter: 'none', opacity: 1 }}
               />
             </div>
