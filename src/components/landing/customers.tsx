@@ -17,24 +17,24 @@ const logos = [
 
 export function Customers() {
   return (
-    <section className="py-16 border-t border-gray-100">
-      <div className="max-w-6xl mx-auto px-6">
-        <p className="text-center text-sm text-gray-400 uppercase tracking-widest mb-10">
+    <section className="py-20 border-t border-gray-100">
+      <div className="max-w-7xl mx-auto px-6">
+        <p className="text-center text-sm text-gray-400 uppercase tracking-widest mb-12">
           Trusted by industry leaders
         </p>
 
-        <InfiniteSlider gap={60} duration={35} className="py-4">
+        <InfiniteSlider gap={80} duration={40} className="py-6">
           {logos.map((logo) => (
             <div
               key={logo.alt}
-              className="flex items-center justify-center px-4"
+              className="flex items-center justify-center px-6"
             >
               <Image
                 src={logo.src}
                 alt={logo.alt}
-                width={100}
-                height={50}
-                className="h-[50px] w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                width={150}
+                height={75}
+                className="h-[75px] w-auto object-contain opacity-100 transition-transform hover:scale-105"
               />
             </div>
           ))}
