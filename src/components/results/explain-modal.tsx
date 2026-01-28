@@ -11,43 +11,122 @@ interface ExplainModalProps {
   title: string;
 }
 
-// Detailed explanations for each pain point
-const painExplanations: Record<number, { scenario: string; problem: string; solution: string; example?: string }> = {
+// Detailed explanations for each pain point with crystal-clear math
+const painExplanations: Record<number, {
+  scenario: string;
+  problem: string;
+  solution: string;
+  mathBreakdown: string[];
+  nonTangible?: string[];
+}> = {
   1: {
-    scenario: "Picture this: Your masterbatch colour looks exactly what the customer wanted. Sample approved. You run the full production batch. You ship the order. Two weeks later, your phone rings.",
-    problem: "\"The color faded after stretching. We're rejecting the entire batch.\" This happens because lab samples don't go through the same stretching process as production. The color you see in your lab is NOT the color your customer gets.",
+    scenario: "Picture this: Your masterbatch color looks perfect. Sample approved. Production done. Order shipped. Two weeks later: 'The color faded after stretching. We're rejecting the entire batch.'",
+    problem: "This happens because lab samples don't go through the same stretching process as production. The color you see in your lab is NOT the color your customer gets.",
     solution: "The 25mm Lab Raffia Tape Line stretches the tape exactly like your production line (5.5 to 7.0 stretch ratios). You test with just 4.5-6 kg of material instead of 1,000+ kg on production. The color you see is the color your customer gets.",
-    example: "If you have 1 rejected trial per month at 200 kg/hr for 3 hours, that's 600 kg wasted × ₹110 (material + processing) = ₹66,000/month loss."
+    mathBreakdown: [
+      "To test properly, here's what it costs:",
+      "• Your machine output: 200 kg per hour",
+      "• Trial run time: 3 hours per batch",
+      "• Material used: 200 kg × 3 hours = 600 kg",
+      "• Material cost: ₹100 per kg",
+      "• Processing cost: ₹10 per kg",
+      "• Total cost per kg: ₹110",
+      "• Cost per trial: 600 kg × ₹110 = ₹66,000",
+      "",
+      "This happens: Once per month",
+      "• Monthly loss: ₹66,000",
+      "• Annual loss: ₹66,000 × 12 = ₹7.92 Lakhs"
+    ],
+    nonTangible: [
+      "Plus the non-tangible losses:",
+      "• Transportation costs back and forth",
+      "• Loss of confidence in front of your customer",
+      "• Your customer losing face in front of THEIR customer",
+      "• Stress of wondering if the color will hold"
+    ]
   },
   2: {
-    scenario: "A company is launching a new pigment in the market which is ₹10 lower in price. You want to try it out, but you have full regular orders running.",
-    problem: "You say to your team: \"Ignore for the moment, we can't spare the machine for trials.\" You miss out on cost savings because you can't afford to stop production for R&D.",
-    solution: "With the lab machine, you can test new pigments anytime without stopping production. Even a tiny ₹1/kg saving on a 200 kg/hr machine running 22 hrs/day, 25 days/month = ₹1,10,000/month in savings!",
-    example: "One successful pigment trial can pay for itself many times over. If you find a pigment that's just ₹1 cheaper, that's ₹13,20,000/year in savings."
+    scenario: "A supplier launches a new pigment—₹10 cheaper per kg. But your machines are running full orders. You can't spare the line for trials. So you ignore it.",
+    problem: "Here's what you're missing: Trial cost on main machine = ₹50,000 per attempt. You skip it. But if that pigment saved just ₹1 per kg...",
+    solution: "With the lab machine, you can test new pigments anytime without stopping production. Even a tiny ₹1/kg saving multiplies across your entire production volume.",
+    mathBreakdown: [
+      "The missed opportunity:",
+      "• Machine output: 200 kg per hour",
+      "• Running hours per day: 20 hours",
+      "• Working days per month: 25 days",
+      "",
+      "If pigment saves just ₹1 per kg:",
+      "• Monthly savings: ₹1 × 200 kg × 20 hrs × 25 days = ₹1,00,000",
+      "• Annual savings: ₹1,00,000 × 12 = ₹12 Lakhs",
+      "",
+      "₹12 Lakhs in profit. From just ₹1 per kg savings.",
+      "That you never discovered."
+    ]
   },
   3: {
-    scenario: "A customer comes with a new product and wants you to develop the masterbatch for them. They need 5-10 kg for a trial run.",
-    problem: "How do you create just 5-10 kg when your production line minimum is 1,000+ kg? You either refuse the customer or waste massive amounts on a small trial.",
-    solution: "The lab line produces exactly the small quantities needed for customer trials. You can serve any customer request without production disruption.",
-    example: "Assuming 3 such cases a year, each causing ₹25,000 in production loss and wastage = ₹75,000/year."
+    scenario: "A customer needs 5-10 kg for their trial run. Your production line can't handle such small quantities.",
+    problem: "The math: Customer needs 5-10 kg. Your minimum production: Much higher. You either waste material or lose the customer.",
+    solution: "The lab line produces exactly the small quantities needed for customer trials without wasting material or stopping production.",
+    mathBreakdown: [
+      "The cost of small batch problems:",
+      "• Customer needs: 5-10 kg",
+      "• Your minimum production: Much higher",
+      "• Loss per case (material wastage + production loss): ₹25,000",
+      "• This happens: 3 times per year",
+      "",
+      "Annual loss: ₹25,000 × 3 = ₹75,000",
+      "",
+      "You either waste material or lose the customer."
+    ]
   },
   4: {
-    scenario: "A new lab in-charge has joined. They want to experiment with new recipes - changing chemicals or additives that could improve functionality or reduce costs.",
-    problem: "Every experiment means stopping commercial production. Innovation gets killed because the cost of experimentation is too high.",
+    scenario: "Your new lab incharge has ideas—new recipes that could improve functionality or reduce costs. But testing means stopping production.",
+    problem: "The cost of blocked innovation: Each innovation test requires production line. Loss per test (material + production time) = ₹25,000. Potential innovations per year: 3.",
     solution: "The lab machine becomes your dedicated R&D tool. Your team can experiment freely, try new formulations, and innovate without touching production.",
-    example: "Assuming 3 such experiments a year, each causing ₹25,000 in production loss = ₹75,000/year."
+    mathBreakdown: [
+      "Innovation blocked:",
+      "• Each innovation test requires production line",
+      "• Loss per test (material + production time): ₹25,000",
+      "• Potential innovations per year: 3",
+      "",
+      "Annual loss: ₹25,000 × 3 = ₹75,000",
+      "",
+      "₹75,000 in improvements. Never tested. Never realized."
+    ]
   },
   5: {
-    scenario: "A big competitor has dropped prices by ₹3/kg by using 20% good recycled material instead of 100% virgin. You've never used recycled material.",
-    problem: "You want to experiment with 10-15% recycled material to stay competitive, but you can't risk production quality on untested formulations.",
-    solution: "Test recycled material blends safely on the lab line. Find the perfect mix that maintains quality while reducing costs. Even ₹1/kg savings across multiple machines adds up fast.",
-    example: "₹1/kg saving × 200 kg/hr × 22 hrs × 25 days = ₹1,10,000/month per machine. With 2 machines, that's ₹26,40,000/year!"
+    scenario: "Your competitor dropped prices by ₹3 per kg. Their secret? 20% recycled material. You want to test 10-15% recycled to compete.",
+    problem: "But here's the problem: Testing on production line is expensive. You hesitate and don't test. Even if you save just ₹1 per kg...",
+    solution: "Test recycled material blends safely on the lab line. Find the perfect mix that maintains quality while reducing costs. Your competitor is capturing this profit. You're watching it slip away.",
+    mathBreakdown: [
+      "The competitive pressure:",
+      "• Machine output: 200 kg per hour",
+      "• Running hours per day: 20 hours",
+      "• Working days per month: 25 days",
+      "",
+      "Even if you save just ₹1 per kg:",
+      "• Monthly savings: ₹1 × 200 kg × 20 hrs × 25 days = ₹1,00,000",
+      "• Annual savings: ₹1,00,000 × 12 = ₹12 Lakhs",
+      "• Per machine",
+      "",
+      "Have multiple machines? Multiply that.",
+      "Your competitor is capturing this profit. You're watching it slip away."
+    ]
   },
   6: {
-    scenario: "It's peak season (post-Diwali to March). Orders are at maximum. Suddenly, your biggest customer needs a new color development urgently.",
-    problem: "You can't say no to your biggest customer, but stopping production for trials means losing regular orders and revenue. It's a lose-lose situation.",
-    solution: "The lab machine handles urgent customer trials while your production lines keep running at full capacity. You never have to choose between serving key customers and maintaining production.",
-    example: "Assuming 2 such peak season emergencies a year, each causing ₹25,000 in lost production = ₹50,000/year."
+    scenario: "It's peak season—Diwali to March. Your biggest customer calls with a new color requirement. You can't say no.",
+    problem: "The damage: You stop regular production for trials. During your most profitable season.",
+    solution: "The lab machine handles urgent customer trials while your production lines keep running at full capacity during peak season.",
+    mathBreakdown: [
+      "Peak season nightmare:",
+      "• You stop regular production for trials",
+      "• Loss per case (production stoppage + wastage): ₹25,000",
+      "• This happens: 2 times per year",
+      "",
+      "Annual loss: ₹25,000 × 2 = ₹50,000",
+      "",
+      "During your most profitable season."
+    ]
   },
 };
 
@@ -92,7 +171,7 @@ export function ExplainModal({ isOpen, onClose, painId, title }: ExplainModalPro
             </div>
 
             {/* Content */}
-            <div className="p-6 max-h-[60vh] overflow-y-auto">
+            <div className="p-6 max-h-[70vh] overflow-y-auto">
               {/* Scenario */}
               <div className="mb-6">
                 <h3 className="text-sm font-semibold text-[#E07A5F] uppercase tracking-wider mb-2">
@@ -123,15 +202,52 @@ export function ExplainModal({ isOpen, onClose, painId, title }: ExplainModalPro
                 </p>
               </div>
 
-              {/* Example Calculation */}
-              {explanation.example && (
-                <div className="bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl p-4">
-                  <h3 className="text-sm font-semibold text-[#6B7280] uppercase tracking-wider mb-2">
-                    Example Calculation
+              {/* Crystal Clear Math Breakdown */}
+              <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5 mb-6">
+                <h3 className="text-sm font-bold text-blue-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <span className="text-lg">📊</span>
+                  Crystal Clear Math
+                </h3>
+                <div className="space-y-1">
+                  {explanation.mathBreakdown.map((line, idx) => (
+                    <p
+                      key={idx}
+                      className={`${
+                        line.startsWith('•')
+                          ? 'text-[#1A1A1A] pl-2'
+                          : line === ''
+                          ? 'h-2'
+                          : line.includes('Annual loss:') || line.includes('Monthly loss:')
+                          ? 'text-[#E07A5F] font-bold text-lg mt-2'
+                          : line.includes('Lakhs')
+                          ? 'text-[#E07A5F] font-bold text-base'
+                          : 'text-[#1A1A1A] font-semibold mt-3'
+                      }`}
+                    >
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              {/* Non-Tangible Losses */}
+              {explanation.nonTangible && (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                  <h3 className="text-sm font-semibold text-amber-700 uppercase tracking-wider mb-2">
+                    ⚠️ Hidden Costs
                   </h3>
-                  <p className="text-[#1A1A1A] leading-relaxed font-medium">
-                    {explanation.example}
-                  </p>
+                  <div className="space-y-1">
+                    {explanation.nonTangible.map((line, idx) => (
+                      <p
+                        key={idx}
+                        className={`${
+                          line.startsWith('•') ? 'text-[#1A1A1A] text-sm pl-2' : 'text-[#1A1A1A] font-medium mb-2'
+                        }`}
+                      >
+                        {line}
+                      </p>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
