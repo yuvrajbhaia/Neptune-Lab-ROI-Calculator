@@ -156,7 +156,7 @@ export default function CalculatorPage() {
     return (
       <main className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-[#006cff] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-[#E07A5F] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">Loading calculator...</p>
         </div>
       </main>
@@ -201,7 +201,7 @@ export default function CalculatorPage() {
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.2 }}
-              className="w-14 h-14 bg-[#006cff] rounded-xl flex items-center justify-center mb-4"
+              className="w-14 h-14 bg-[#E07A5F] rounded-xl flex items-center justify-center mb-4"
             >
               <Icon className="w-7 h-7 text-white" />
             </motion.div>
@@ -257,7 +257,7 @@ export default function CalculatorPage() {
                     onKeyDown={handleKeyDown}
                     placeholder={step.placeholder}
                     autoFocus
-                    className={`w-full ${step.prefix ? 'pl-10' : 'pl-4'} ${step.suffix ? 'pr-20' : 'pr-4'} py-4 text-3xl font-bold text-[#1A1A1A] bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#006cff]/30 focus:border-[#006cff] transition-all text-center`}
+                    className={`w-full ${step.prefix ? 'pl-10' : 'pl-4'} ${step.suffix ? 'pr-20' : 'pr-4'} py-4 text-3xl font-bold text-[#1A1A1A] bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/30 focus:border-[#E07A5F] transition-all text-center`}
                   />
                   {step.suffix && (
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-base font-semibold text-gray-400 pointer-events-none">

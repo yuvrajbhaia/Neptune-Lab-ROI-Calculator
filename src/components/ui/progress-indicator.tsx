@@ -45,18 +45,18 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
               key={step}
               className={cn(
                 "w-2 h-2 rounded-full relative z-10 transition-colors duration-300",
-                step <= currentStep ? "bg-green-500" : "bg-gray-300"
+                step <= currentStep ? "bg-[#E07A5F]" : "bg-gray-300"
               )}
             />
           );
         })}
 
-        {/* Green progress overlay - aligned with dots */}
+        {/* Orange progress overlay - aligned with dots */}
         <motion.div
           animate={{
             width: getGreenBarWidth(),
           }}
-          className="absolute left-0 top-1/2 -translate-y-1/2 h-2 bg-green-500 rounded-full"
+          className="absolute left-0 top-1/2 -translate-y-1/2 h-2 bg-[#E07A5F] rounded-full"
           transition={{
             type: "spring",
             stiffness: 300,
@@ -100,7 +100,7 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
               stiffness: 400,
               damping: 20,
             }}
-            className="px-6 py-2.5 rounded-full text-white bg-[#006cff] hover:bg-[#0052cc] transition-colors font-semibold text-sm flex-1"
+            className="px-6 py-2.5 rounded-full text-white bg-[#E07A5F] hover:bg-[#d16a4f] transition-colors font-semibold text-sm flex-1"
           >
             <div className="flex items-center justify-center gap-2">
               {isLastStep && (
