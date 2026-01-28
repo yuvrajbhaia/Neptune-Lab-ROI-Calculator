@@ -34,7 +34,7 @@ export function Customers() {
                 alt={logo.alt}
                 width={200}
                 height={100}
-                className="h-[100px] w-auto object-contain opacity-100 transition-transform hover:scale-105"
+                className="h-[100px] w-auto object-contain"
               />
             </div>
           ))}
