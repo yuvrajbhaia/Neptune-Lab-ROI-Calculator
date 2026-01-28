@@ -19,6 +19,7 @@ import {
 } from "@/lib/calculations";
 import { formatCurrency } from "@/lib/utils";
 import { ArrowLeft, Download, CheckCircle2 } from "lucide-react";
+import { downloadBothPDFs } from "@/lib/pdf-generator";
 
 // Define input configurations for each pain point
 const painInputConfigs: Record<number, { label: string; field: string; suffix?: string; prefix?: string }[]> = {
@@ -56,6 +57,7 @@ export default function ResultsPage() {
   const [leadData, setLeadData] = useState<LeadFormData | null>(null);
   const [explainModalOpen, setExplainModalOpen] = useState(false);
   const [explainPainId, setExplainPainId] = useState<number>(1);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   // Recalculate results when inputs change
   const recalculateResults = useCallback((newInputs: AllInputs) => {
@@ -170,6 +172,31 @@ export default function ResultsPage() {
       setIsSubmitted(true);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDownloadReports = async () => {
+    if (!leadData) return;
+
+    setIsDownloading(true);
+    try {
+      // Path to your quotation PDF in the public folder
+      const quotationPdfUrl = '/Neptune_Quotation.pdf';
+
+      await downloadBothPDFs(
+        {
+          lead: leadData,
+          inputs,
+          results,
+          total,
+        },
+        quotationPdfUrl
+      );
+    } catch (error) {
+      console.error('Error downloading PDFs:', error);
+      alert('Failed to download PDFs. Please try again.');
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -392,9 +419,18 @@ export default function ResultsPage() {
               <Button variant="outline" onClick={() => router.push("/")}>
                 Back to Home
               </Button>
-              <Button>
-                <Download className="mr-2 h-4 w-4" />
-                Download Report
+              <Button onClick={handleDownloadReports} disabled={isDownloading}>
+                {isDownloading ? (
+                  <>
+                    <Download className="mr-2 h-4 w-4 animate-bounce" />
+                    Downloading...
+                  </>
+                ) : (
+                  <>
+                    <Download className="mr-2 h-4 w-4" />
+                    Download Report & Quotation
+                  </>
+                )}
               </Button>
             </div>
           </motion.div>
