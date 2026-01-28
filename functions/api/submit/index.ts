@@ -1,10 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-export const runtime = 'edge';
-
-export async function POST(request: NextRequest) {
+export async function onRequest(context: any) {
   try {
-    const data = await request.json();
+    const data = await context.request.json();
 
     // Log the submission
     console.log('📊 ROI Calculator Submission:', {
@@ -15,14 +11,16 @@ export async function POST(request: NextRequest) {
     });
 
     // Get the Apps Script URL from environment variables
-    const appsScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
+    const appsScriptUrl = context.env.GOOGLE_APPS_SCRIPT_URL;
 
     if (!appsScriptUrl) {
       console.warn('⚠️ GOOGLE_APPS_SCRIPT_URL not configured, skipping Google Sheets submission');
       // Still return success for graceful degradation
-      return NextResponse.json({
+      return new Response(JSON.stringify({
         success: true,
         message: 'Form submitted successfully (Google Sheets integration pending)',
+      }), {
+        headers: { 'Content-Type': 'application/json' }
       });
     }
 
@@ -86,30 +84,37 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       console.error('❌ Google Sheets submission failed:', response.status, response.statusText);
       // Still return success for graceful degradation
-      return NextResponse.json({
+      return new Response(JSON.stringify({
         success: true,
         message: 'Form submitted successfully (Google Sheets sync failed)',
         warning: 'Data not saved to Google Sheets',
+      }), {
+        headers: { 'Content-Type': 'application/json' }
       });
     }
 
     const result = await response.json();
     console.log('✅ Google Sheets submission successful:', result);
 
-    return NextResponse.json({
+    return new Response(JSON.stringify({
       success: true,
       message: 'Form submitted and saved to Google Sheets successfully',
       data: result,
+    }), {
+      headers: { 'Content-Type': 'application/json' }
     });
 
   } catch (error) {
     console.error('❌ Submission error:', error);
 
     // Return success with warning for graceful degradation
-    return NextResponse.json({
+    return new Response(JSON.stringify({
       success: true,
       message: 'Form submitted successfully (with errors)',
       warning: error instanceof Error ? error.message : 'Unknown error occurred',
-    }, { status: 200 });
+    }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }
