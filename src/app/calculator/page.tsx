@@ -154,43 +154,36 @@ export default function CalculatorPage() {
   // Don't render until mounted to avoid hydration issues
   if (!mounted) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] flex items-center justify-center">
+      <main className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white/70">Loading calculator...</p>
+          <div className="w-16 h-16 border-4 border-[#006cff] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading calculator...</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-green-500/5 rounded-full blur-3xl animate-pulse delay-500" />
-      </div>
-
+    <main className="min-h-screen bg-white">
       {/* Header */}
-      <header className="relative z-10 py-6 px-4">
+      <header className="py-4 px-4 border-b border-gray-200">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
             <Image
               src="/neptune-logo.png"
               alt="Neptune Plastics"
-              width={60}
-              height={60}
+              width={50}
+              height={50}
               className="rounded-lg object-contain transition-transform group-hover:scale-105"
             />
             <div className="hidden sm:block">
-              <div className="font-semibold text-white">Neptune Plastics</div>
-              <div className="text-xs text-white/60">ROI Calculator</div>
+              <div className="font-semibold text-[#1A1A1A]">Neptune Plastics</div>
+              <div className="text-xs text-gray-500">ROI Calculator</div>
             </div>
           </Link>
           <button
             onClick={() => router.push("/")}
-            className="text-white/60 hover:text-white transition-colors text-sm"
+            className="text-gray-500 hover:text-gray-700 transition-colors text-sm"
           >
             Exit
           </button>
@@ -198,134 +191,101 @@ export default function CalculatorPage() {
       </header>
 
       {/* Step Content */}
-      <div className="relative z-10 min-h-[calc(100vh-200px)] flex items-center justify-center p-4">
-        <div className="w-full max-w-2xl">
-          <AnimatePresence mode="wait">
+      <div className="min-h-[calc(100vh-100px)] flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          {/* Single card container - doesn't unmount */}
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+            {/* Icon - changes without unmounting card */}
             <motion.div
-              key={currentStep}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="space-y-8"
+              key={`icon-${currentStep}`}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.2 }}
+              className="w-14 h-14 bg-[#006cff] rounded-xl flex items-center justify-center mb-4"
             >
-              {/* Step indicator badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex justify-center"
+              <Icon className="w-7 h-7 text-white" />
+            </motion.div>
+
+            {/* Title - smooth transition */}
+            <AnimatePresence mode="wait">
+              <motion.h2
+                key={`title-${currentStep}`}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2 }}
+                className="text-2xl font-bold text-[#1A1A1A] mb-2"
               >
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-                  <Icon className="w-4 h-4 text-white" />
-                  <span className="text-white text-sm font-medium">
-                    Step {currentStep + 1} of {steps.length}
-                  </span>
+                {step.title}
+              </motion.h2>
+            </AnimatePresence>
+
+            {/* Description - smooth transition */}
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={`desc-${currentStep}`}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2, delay: 0.05 }}
+                className="text-gray-600 mb-6 text-sm"
+              >
+                {step.description}
+              </motion.p>
+            </AnimatePresence>
+
+            {/* Input field - smooth transition */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`input-${currentStep}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2, delay: 0.1 }}
+                className="mb-6"
+              >
+                <div className="relative">
+                  {step.prefix && (
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xl font-bold text-gray-400 pointer-events-none">
+                      {step.prefix}
+                    </span>
+                  )}
+                  <input
+                    type="number"
+                    value={currentValue}
+                    onChange={(e) => setCurrentValue(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder={step.placeholder}
+                    autoFocus
+                    className={`w-full ${step.prefix ? 'pl-10' : 'pl-4'} ${step.suffix ? 'pr-20' : 'pr-4'} py-4 text-3xl font-bold text-[#1A1A1A] bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#006cff]/30 focus:border-[#006cff] transition-all text-center`}
+                  />
+                  {step.suffix && (
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-base font-semibold text-gray-400 pointer-events-none">
+                      {step.suffix}
+                    </span>
+                  )}
                 </div>
               </motion.div>
+            </AnimatePresence>
 
-              {/* Main card */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 }}
-                className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-12 border border-white/20"
-              >
-                {/* Icon circle */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 260,
-                    damping: 20,
-                    delay: 0.2
-                  }}
-                  className="w-20 h-20 bg-gradient-to-br from-[#006cff] to-[#0052cc] rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30"
-                >
-                  <Icon className="w-10 h-10 text-white" />
-                </motion.div>
+            {/* Progress Indicator - always visible */}
+            <ProgressIndicator
+              currentStep={currentStep + 1}
+              totalSteps={steps.length}
+              onContinue={handleNext}
+              onBack={currentStep > 0 ? handleBack : undefined}
+              isFirstStep={currentStep === 0}
+              isLastStep={currentStep === steps.length - 1}
+              continueLabel={currentStep === steps.length - 1 ? "See Results" : "Continue"}
+            />
+          </div>
 
-                {/* Title */}
-                <motion.h2
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-3 leading-tight"
-                >
-                  {step.title}
-                </motion.h2>
-
-                {/* Description */}
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.35 }}
-                  className="text-[#6B7280] mb-8 text-lg"
-                >
-                  {step.description}
-                </motion.p>
-
-                {/* Input field */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="mb-10"
-                >
-                  <div className="relative">
-                    {step.prefix && (
-                      <span className="absolute left-6 top-1/2 -translate-y-1/2 text-3xl font-bold text-gray-400 pointer-events-none">
-                        {step.prefix}
-                      </span>
-                    )}
-                    <input
-                      type="number"
-                      value={currentValue}
-                      onChange={(e) => setCurrentValue(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      placeholder={step.placeholder}
-                      autoFocus
-                      className={`w-full ${step.prefix ? 'pl-14' : 'pl-6'} ${step.suffix ? 'pr-28' : 'pr-6'} py-6 text-4xl font-bold text-[#1A1A1A] bg-gray-50 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-[#006cff]/20 focus:border-[#006cff] transition-all text-center`}
-                    />
-                    {step.suffix && (
-                      <span className="absolute right-6 top-1/2 -translate-y-1/2 text-xl font-semibold text-gray-400 pointer-events-none">
-                        {step.suffix}
-                      </span>
-                    )}
-                  </div>
-                </motion.div>
-
-                {/* Progress Indicator */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  <ProgressIndicator
-                    currentStep={currentStep + 1}
-                    totalSteps={steps.length}
-                    onContinue={handleNext}
-                    onBack={currentStep > 0 ? handleBack : undefined}
-                    isFirstStep={currentStep === 0}
-                    isLastStep={currentStep === steps.length - 1}
-                    continueLabel={currentStep === steps.length - 1 ? "See Results" : "Continue"}
-                  />
-                </motion.div>
-              </motion.div>
-
-              {/* Helper text */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="text-center"
-              >
-                <p className="text-white/60 text-sm">
-                  Press <kbd className="px-2 py-1 bg-white/10 rounded border border-white/20 text-white/80 text-xs">Enter</kbd> to continue
-                </p>
-              </motion.div>
-            </motion.div>
-          </AnimatePresence>
+          {/* Helper text */}
+          <div className="text-center mt-4">
+            <p className="text-gray-400 text-xs">
+              Press <kbd className="px-2 py-1 bg-gray-100 rounded border border-gray-200 text-gray-600 text-xs font-mono">Enter</kbd> to continue
+            </p>
+          </div>
         </div>
       </div>
     </main>

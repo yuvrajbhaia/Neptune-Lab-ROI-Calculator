@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import { CircleCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -26,8 +26,16 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
 }) => {
   const isExpanded = isFirstStep;
 
+  // Calculate green bar width based on current step
+  // Gap between dots is 24px (gap-6), dot width is 8px (w-2)
+  const getGreenBarWidth = () => {
+    if (currentStep === 1) return 8; // Just cover first dot
+    // For each additional step: add (dotWidth + gap)
+    return 8 + ((currentStep - 1) * 32); // 8px dot + 24px gap = 32px per step
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center gap-8">
+    <div className="flex flex-col items-center justify-center gap-6">
       {/* Progress dots */}
       <div className="flex items-center gap-6 relative">
         {Array.from({ length: totalSteps }).map((_, index) => {
@@ -36,36 +44,32 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
             <div
               key={step}
               className={cn(
-                "w-2 h-2 rounded-full relative z-10 transition-colors",
-                step <= currentStep ? "bg-white" : "bg-gray-300"
+                "w-2 h-2 rounded-full relative z-10 transition-colors duration-300",
+                step <= currentStep ? "bg-green-500" : "bg-gray-300"
               )}
             />
           );
         })}
 
-        {/* Green progress overlay */}
+        {/* Green progress overlay - aligned with dots */}
         <motion.div
-          initial={{ width: '12px', height: "24px", x: 0 }}
           animate={{
-            width: currentStep === 1 ? '24px' : currentStep === 2 ? '60px' : currentStep === 3 ? '96px' : currentStep === 4 ? '132px' : '168px',
-            x: 0
+            width: getGreenBarWidth(),
           }}
-          className="absolute -left-[8px] -top-[8px] -translate-y-1/2 h-3 bg-green-500 rounded-full"
+          className="absolute left-0 top-1/2 -translate-y-1/2 h-2 bg-green-500 rounded-full"
           transition={{
             type: "spring",
             stiffness: 300,
-            damping: 20,
+            damping: 25,
             mass: 0.8,
-            bounce: 0.25,
-            duration: 0.6
           }}
         />
       </div>
 
       {/* Buttons container */}
-      <div className="w-full max-w-sm">
+      <div className="w-full">
         <motion.div
-          className="flex items-center gap-1"
+          className="flex items-center gap-2"
           animate={{
             justifyContent: isExpanded ? 'stretch' : 'space-between'
           }}
@@ -73,18 +77,15 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
           {!isExpanded && onBack && (
             <motion.button
               initial={{ opacity: 0, width: 0, scale: 0.8 }}
-              animate={{ opacity: 1, width: "64px", scale: 1 }}
+              animate={{ opacity: 1, width: "auto", scale: 1 }}
               transition={{
                 type: "spring",
                 stiffness: 400,
-                damping: 15,
-                mass: 0.8,
-                bounce: 0.25,
-                duration: 0.6,
-                opacity: { duration: 0.2 }
+                damping: 20,
+                mass: 0.5,
               }}
               onClick={onBack}
-              className="px-4 py-3 text-black flex items-center justify-center bg-gray-100 font-semibold rounded-full hover:bg-gray-50 hover:border transition-colors flex-1 w-16 text-sm"
+              className="px-5 py-2.5 text-black flex items-center justify-center bg-gray-100 font-semibold rounded-full hover:bg-gray-200 transition-colors text-sm"
             >
               {backLabel}
             </motion.button>
@@ -94,12 +95,14 @@ export const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
             animate={{
               flex: isExpanded ? 1 : 'inherit',
             }}
-            className={cn(
-              "px-4 py-3 rounded-full text-white bg-[#006cff] transition-colors flex-1 w-56",
-              !isExpanded && 'w-44'
-            )}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 20,
+            }}
+            className="px-6 py-2.5 rounded-full text-white bg-[#006cff] hover:bg-[#0052cc] transition-colors font-semibold text-sm flex-1"
           >
-            <div className="flex items-center font-[600] justify-center gap-2 text-sm">
+            <div className="flex items-center justify-center gap-2">
               {isLastStep && (
                 <motion.div
                   initial={{ scale: 0, opacity: 0 }}
