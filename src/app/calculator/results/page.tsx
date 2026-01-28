@@ -51,7 +51,6 @@ export default function ResultsPage() {
   const router = useRouter();
   const [inputs, setInputs] = useState<AllInputs>(defaultInputs);
   const [results, setResults] = useState<PainResult[]>([]);
-  const [isRevealed, setIsRevealed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [leadData, setLeadData] = useState<LeadFormData | null>(null);
@@ -163,13 +162,11 @@ export default function ResultsPage() {
       const result = await response.json();
       console.log("✅ Submission successful:", result);
 
-      // Reveal the total
-      setIsRevealed(true);
+      // Mark as submitted
       setIsSubmitted(true);
     } catch (error) {
       console.error("Submission error:", error);
-      // Still reveal for demo purposes (graceful degradation)
-      setIsRevealed(true);
+      // Still mark as submitted (graceful degradation)
       setIsSubmitted(true);
     } finally {
       setIsLoading(false);
@@ -209,7 +206,7 @@ export default function ResultsPage() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
           <h1 className="text-3xl md:text-4xl font-bold text-[#1A1A1A] mb-4">
             Your ROI Analysis Results
@@ -217,6 +214,113 @@ export default function ResultsPage() {
           <p className="text-[#6B7280] max-w-2xl mx-auto">
             Select the pain points relevant to your business to calculate your potential annual savings
           </p>
+        </motion.div>
+
+        {/* Factory Settings - Editable */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-white rounded-xl border border-[#E5E7EB] p-6 mb-12"
+        >
+          <h2 className="text-lg font-semibold text-[#1A1A1A] mb-4">Your Factory Settings</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div>
+              <label className="block text-sm text-[#6B7280] mb-2">Output per hour</label>
+              <div className="relative">
+                <input
+                  type="number"
+                  value={inputs.factory.outputPerHour}
+                  onChange={(e) => {
+                    const newInputs = {
+                      ...inputs,
+                      factory: { ...inputs.factory, outputPerHour: parseFloat(e.target.value) || 0 }
+                    };
+                    setInputs(newInputs);
+                    recalculateResults(newInputs);
+                  }}
+                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
+                />
+                <span className="absolute right-3 top-2 text-sm text-[#6B7280]">kg/hr</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm text-[#6B7280] mb-2">Working hours/day</label>
+              <div className="relative">
+                <input
+                  type="number"
+                  value={inputs.factory.workingHoursPerDay}
+                  onChange={(e) => {
+                    const newInputs = {
+                      ...inputs,
+                      factory: { ...inputs.factory, workingHoursPerDay: parseFloat(e.target.value) || 0 }
+                    };
+                    setInputs(newInputs);
+                    recalculateResults(newInputs);
+                  }}
+                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
+                />
+                <span className="absolute right-3 top-2 text-sm text-[#6B7280]">hrs</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm text-[#6B7280] mb-2">Working days/month</label>
+              <div className="relative">
+                <input
+                  type="number"
+                  value={inputs.factory.workingDaysPerMonth}
+                  onChange={(e) => {
+                    const newInputs = {
+                      ...inputs,
+                      factory: { ...inputs.factory, workingDaysPerMonth: parseFloat(e.target.value) || 0 }
+                    };
+                    setInputs(newInputs);
+                    recalculateResults(newInputs);
+                  }}
+                  className="w-full px-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
+                />
+                <span className="absolute right-3 top-2 text-sm text-[#6B7280]">days</span>
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm text-[#6B7280] mb-2">Material cost/kg</label>
+              <div className="relative">
+                <span className="absolute left-3 top-2 text-sm text-[#6B7280]">₹</span>
+                <input
+                  type="number"
+                  value={inputs.factory.materialCostPerKg}
+                  onChange={(e) => {
+                    const newInputs = {
+                      ...inputs,
+                      factory: { ...inputs.factory, materialCostPerKg: parseFloat(e.target.value) || 0 }
+                    };
+                    setInputs(newInputs);
+                    recalculateResults(newInputs);
+                  }}
+                  className="w-full pl-8 pr-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm text-[#6B7280] mb-2">Processing cost/kg</label>
+              <div className="relative">
+                <span className="absolute left-3 top-2 text-sm text-[#6B7280]">₹</span>
+                <input
+                  type="number"
+                  value={inputs.factory.processingCostPerKg}
+                  onChange={(e) => {
+                    const newInputs = {
+                      ...inputs,
+                      factory: { ...inputs.factory, processingCostPerKg: parseFloat(e.target.value) || 0 }
+                    };
+                    setInputs(newInputs);
+                    recalculateResults(newInputs);
+                  }}
+                  className="w-full pl-8 pr-3 py-2 border border-[#E5E7EB] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Pain Cards Grid */}
@@ -245,9 +349,9 @@ export default function ResultsPage() {
           title={results.find((r) => r.id === explainPainId)?.title || ""}
         />
 
-        {/* Blurred Total */}
+        {/* Total Impact */}
         <div className="mb-12">
-          <BlurredTotal total={total} isRevealed={isRevealed} />
+          <BlurredTotal total={total} isRevealed={true} />
         </div>
 
         {/* Lead Form or Success Message */}
@@ -280,34 +384,32 @@ export default function ResultsPage() {
           </motion.div>
         )}
 
-        {/* Summary Cards - Show after reveal */}
-        {isRevealed && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6"
-          >
-            <div className="bg-white rounded-xl border border-[#E5E7EB] p-6 text-center">
-              <p className="text-sm text-[#6B7280] mb-2">Monthly Savings</p>
-              <p className="text-2xl font-bold text-[#1A1A1A]">
-                {formatCurrency(total / 12)}
-              </p>
-            </div>
-            <div className="bg-white rounded-xl border border-[#E5E7EB] p-6 text-center">
-              <p className="text-sm text-[#6B7280] mb-2">Payback Period</p>
-              <p className="text-2xl font-bold text-[#E07A5F]">
-                &lt; 12 Months
-              </p>
-            </div>
-            <div className="bg-white rounded-xl border border-[#E5E7EB] p-6 text-center">
-              <p className="text-sm text-[#6B7280] mb-2">5-Year Savings</p>
-              <p className="text-2xl font-bold text-[#1A1A1A]">
-                {formatCurrency(total * 5)}
-              </p>
-            </div>
-          </motion.div>
-        )}
+        {/* Summary Cards - Always visible */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          <div className="bg-white rounded-xl border border-[#E5E7EB] p-6 text-center">
+            <p className="text-sm text-[#6B7280] mb-2">Monthly Savings</p>
+            <p className="text-2xl font-bold text-[#1A1A1A]">
+              {formatCurrency(total / 12)}
+            </p>
+          </div>
+          <div className="bg-white rounded-xl border border-[#E5E7EB] p-6 text-center">
+            <p className="text-sm text-[#6B7280] mb-2">Payback Period</p>
+            <p className="text-2xl font-bold text-[#E07A5F]">
+              &lt; 12 Months
+            </p>
+          </div>
+          <div className="bg-white rounded-xl border border-[#E5E7EB] p-6 text-center">
+            <p className="text-sm text-[#6B7280] mb-2">5-Year Savings</p>
+            <p className="text-2xl font-bold text-[#1A1A1A]">
+              {formatCurrency(total * 5)}
+            </p>
+          </div>
+        </motion.div>
       </div>
 
       {/* Footer */}

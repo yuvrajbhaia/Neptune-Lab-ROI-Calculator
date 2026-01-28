@@ -74,10 +74,10 @@ export function LeadForm({ onSubmit, isLoading }: LeadFormProps) {
     >
       <div className="text-center mb-6">
         <h3 className="text-xl font-bold text-[#1A1A1A] mb-2">
-          Get Your Detailed ROI Report
+          Download Detailed Report & Quotation
         </h3>
         <p className="text-sm text-[#6B7280]">
-          Fill in your details to reveal the total and receive a comprehensive report
+          Get a comprehensive breakdown and pricing for the 25mm Lab Raffia Tape Line
         </p>
       </div>
 
@@ -140,12 +140,12 @@ export function LeadForm({ onSubmit, isLoading }: LeadFormProps) {
           {isLoading ? (
             <>
               <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Processing...
+              Generating Report...
             </>
           ) : (
             <>
               <Send className="mr-2 h-5 w-5" />
-              Reveal Total & Get Report
+              Download Report & Quotation
             </>
           )}
         </Button>

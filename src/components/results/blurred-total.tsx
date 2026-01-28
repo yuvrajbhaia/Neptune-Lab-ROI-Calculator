@@ -17,48 +17,24 @@ export function BlurredTotal({ total, isRevealed }: BlurredTotalProps) {
 
       <div className="relative z-10 text-center">
         <div className="flex items-center justify-center gap-2 mb-4">
-          {isRevealed ? (
-            <Unlock className="w-5 h-5 text-[#E07A5F]" />
-          ) : (
-            <Lock className="w-5 h-5 text-[#9CA3AF]" />
-          )}
+          <Unlock className="w-5 h-5 text-[#E07A5F]" />
           <p className="text-sm text-[#9CA3AF] uppercase tracking-wider">
-            {isRevealed ? "Your Total Annual Impact" : "Total Annual Impact"}
+            Your Total Annual Impact
           </p>
         </div>
 
-        <AnimatePresence mode="wait">
-          {isRevealed ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-              <p className="text-5xl md:text-6xl font-bold text-white mb-2">
-                {formatCurrency(total)}
-              </p>
-              <p className="text-sm text-[#E07A5F]">
-                Potential savings per year
-              </p>
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="relative"
-            >
-              <p
-                className="text-5xl md:text-6xl font-bold text-white mb-2 select-none"
-                style={{ filter: "blur(12px)" }}
-              >
-                {formatCurrency(total)}
-              </p>
-              <p className="text-sm text-[#6B7280]">
-                Fill the form below to reveal
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+          <p className="text-5xl md:text-6xl font-bold text-white mb-2">
+            {formatCurrency(total)}
+          </p>
+          <p className="text-sm text-[#E07A5F]">
+            Potential savings per year
+          </p>
+        </motion.div>
       </div>
     </div>
   );
