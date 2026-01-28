@@ -43,31 +43,31 @@ export function PainCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: id * 0.05 }}
+      onClick={onToggle}
       className={`
-        relative p-5 rounded-xl border-2 transition-all duration-200
+        relative p-5 rounded-xl border-2 transition-all duration-200 cursor-pointer
         ${
           isSelected
             ? "border-[#E07A5F] bg-[#E07A5F]/5"
-            : "border-[#E5E7EB] bg-white"
+            : "border-[#E5E7EB] bg-white hover:border-[#E07A5F]/30"
         }
       `}
     >
       {/* Top Row: Checkbox + Title + Explain Button */}
       <div className="flex items-start gap-3 mb-3">
         {/* Checkbox */}
-        <button
-          onClick={onToggle}
+        <div
           className={`
             flex-shrink-0 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all mt-0.5
             ${
               isSelected
                 ? "border-[#E07A5F] bg-[#E07A5F]"
-                : "border-[#D1D5DB] hover:border-[#E07A5F]/50"
+                : "border-[#D1D5DB]"
             }
           `}
         >
           {isSelected && <Check className="w-4 h-4 text-white" />}
-        </button>
+        </div>
 
         {/* Title & Description */}
         <div className="flex-1 min-w-0">
@@ -97,7 +97,10 @@ export function PainCard({
       {inputs.length > 0 && isSelected && (
         <div className="mb-4">
           <button
-            onClick={() => setShowInputs(!showInputs)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowInputs(!showInputs);
+            }}
             className="flex items-center gap-1 text-xs font-medium text-[#6B7280] hover:text-[#1A1A1A] transition-colors mb-2"
           >
             {showInputs ? (
@@ -114,6 +117,7 @@ export function PainCard({
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               className="space-y-2 pl-9"
+              onClick={(e) => e.stopPropagation()}
             >
               {inputs.map((input) => (
                 <div key={input.field} className="flex items-center gap-2">
