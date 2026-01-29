@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook, Instagram } from "lucide-react";
+import { Mail, Phone, MapPin, Linkedin, Globe } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 
 export function Footer() {
   return (
@@ -26,40 +27,31 @@ export function Footer() {
             </p>
             <div className="flex gap-3">
               <a
-                href="https://linkedin.com"
+                href="https://linkedin.com/company/neptune-plastics"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#E07A5F] text-gray-600 hover:text-white transition-all flex items-center justify-center group"
+                className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#0A66C2] text-gray-600 hover:text-white transition-all flex items-center justify-center group"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="w-4 h-4" />
               </a>
               <a
-                href="https://twitter.com"
+                href="https://wa.me/911234567890"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#E07A5F] text-gray-600 hover:text-white transition-all flex items-center justify-center group"
-                aria-label="Twitter"
+                className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#25D366] text-gray-600 hover:text-white transition-all flex items-center justify-center group"
+                aria-label="WhatsApp"
               >
-                <Twitter className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" />
               </a>
               <a
-                href="https://facebook.com"
+                href="https://www.neptuneplastics.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#E07A5F] text-gray-600 hover:text-white transition-all flex items-center justify-center group"
-                aria-label="Facebook"
+                aria-label="Website"
               >
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#E07A5F] text-gray-600 hover:text-white transition-all flex items-center justify-center group"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-4 h-4" />
+                <Globe className="w-4 h-4" />
               </a>
             </div>
           </div>
