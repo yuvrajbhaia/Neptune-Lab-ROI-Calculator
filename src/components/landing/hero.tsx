@@ -23,12 +23,12 @@ export function Hero() {
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-[#6B7280] mb-4 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-[#6B7280] mb-6 max-w-3xl mx-auto">
             Lab extrusion lines for masterbatch, Raffia tape, film filament and pipes
           </p>
 
           {/* Secondary text */}
-          <p className="text-base md:text-lg text-[#E07A5F] mb-8 font-medium">
+          <p className="text-2xl md:text-3xl lg:text-4xl text-[#E07A5F] mb-8 font-bold">
             Stop losing money on production trials
           </p>
 
