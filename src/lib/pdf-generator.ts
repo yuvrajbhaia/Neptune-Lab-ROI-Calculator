@@ -173,11 +173,11 @@ function drawEmailIcon(doc: jsPDF, x: number, y: number, size: number, color: [n
 function drawPhoneIcon(doc: jsPDF, x: number, y: number, size: number, color: [number, number, number]) {
   doc.setDrawColor(...color);
   doc.setLineWidth(0.3);
-  // Phone receiver curve
-  const cx = x + size / 2;
-  const cy = y + size / 2;
-  doc.arc(cx - size * 0.2, cy - size * 0.2, size * 0.3, size * 0.3, 45, 135);
-  doc.arc(cx + size * 0.2, cy + size * 0.2, size * 0.3, size * 0.3, 225, 315);
+  // Phone handset shape
+  doc.roundedRect(x + size * 0.15, y, size * 0.7, size * 0.25, 0.5, 0.5);
+  doc.roundedRect(x + size * 0.15, y + size * 0.75, size * 0.7, size * 0.25, 0.5, 0.5);
+  doc.line(x + size * 0.3, y + size * 0.25, x + size * 0.4, y + size * 0.75);
+  doc.line(x + size * 0.7, y + size * 0.25, x + size * 0.6, y + size * 0.75);
 }
 
 // Helper to draw WhatsApp icon (phone in speech bubble)
@@ -203,8 +203,11 @@ function drawGlobeIcon(doc: jsPDF, x: number, y: number, size: number, color: [n
   doc.line(cx, cy - r, cx, cy + r);
   // Horizontal line
   doc.line(cx - r, cy, cx + r, cy);
-  // Curved lines
-  doc.ellipse(cx, cy, r * 0.5, r);
+  // Meridian lines (vertical curves approximated with lines)
+  doc.line(cx - r * 0.5, cy - r, cx - r * 0.4, cy);
+  doc.line(cx - r * 0.4, cy, cx - r * 0.5, cy + r);
+  doc.line(cx + r * 0.5, cy - r, cx + r * 0.4, cy);
+  doc.line(cx + r * 0.4, cy, cx + r * 0.5, cy + r);
 }
 
 export async function generateROIReport(data: PDFData): Promise<jsPDF> {
