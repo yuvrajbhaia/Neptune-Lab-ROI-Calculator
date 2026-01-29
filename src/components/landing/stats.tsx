@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 
 const stats = [
   { value: "57", suffix: "+", label: "Years of Experience" },
-  { value: "2,457", suffix: "+", label: "Machines Installed" },
-  { value: "3,000", suffix: "+", label: "Happy Customers Worldwide" },
-  { value: "30M", suffix: "+", label: "Tons Processed" },
+  { value: "1,553", suffix: "+", label: "Customers" },
+  { value: "23", suffix: "+", label: "Countries" },
+  { value: "2,477", suffix: "+", label: "Machines Installed" },
 ];
 
 export function Stats() {
