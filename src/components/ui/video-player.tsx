@@ -31,6 +31,9 @@ const VideoThumbnailPlayer = React.forwardRef<HTMLDivElement, VideoThumbnailPlay
 
     // Effect to handle the 'Escape' key press for closing the modal
     React.useEffect(() => {
+      // Guard against SSR - only run in browser
+      if (typeof window === 'undefined') return;
+
       const handleEsc = (event: KeyboardEvent) => {
         if (event.key === "Escape") {
           setIsModalOpen(false);
@@ -44,6 +47,9 @@ const VideoThumbnailPlayer = React.forwardRef<HTMLDivElement, VideoThumbnailPlay
 
     // Prevent body scroll when modal is open
     React.useEffect(() => {
+        // Guard against SSR - only run in browser
+        if (typeof document === 'undefined') return;
+
         if (isModalOpen) {
             document.body.style.overflow = 'hidden';
         } else {
