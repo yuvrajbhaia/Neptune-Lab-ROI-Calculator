@@ -27,7 +27,7 @@ export function Footer() {
             </p>
             <div className="flex gap-3">
               <a
-                href="https://linkedin.com/company/neptune-plastics"
+                href="https://www.linkedin.com/company/neptune-plastic-metal-industries"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#0A66C2] text-gray-600 hover:text-white transition-all flex items-center justify-center group"
@@ -36,7 +36,7 @@ export function Footer() {
                 <Linkedin className="w-4 h-4" />
               </a>
               <a
-                href="https://wa.me/911234567890"
+                href="https://wa.me/917439505779"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#25D366] text-gray-600 hover:text-white transition-all flex items-center justify-center group"
@@ -45,7 +45,7 @@ export function Footer() {
                 <MessageCircle className="w-4 h-4" />
               </a>
               <a
-                href="https://www.neptuneplastics.com"
+                href="https://neptuneplastic.net"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg bg-gray-100 hover:bg-[#E07A5F] text-gray-600 hover:text-white transition-all flex items-center justify-center group"
