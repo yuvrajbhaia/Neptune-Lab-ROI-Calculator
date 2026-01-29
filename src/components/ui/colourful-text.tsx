@@ -4,17 +4,16 @@ import React from "react";
 import { motion } from "framer-motion";
 
 export function ColourfulText({ text }: { text: string }) {
+  // Vibrant rainbow colors with high saturation
   const colors = [
-    "rgb(131, 179, 32)",
-    "rgb(47, 195, 106)",
-    "rgb(42, 169, 210)",
-    "rgb(4, 112, 202)",
-    "rgb(107, 10, 255)",
-    "rgb(183, 0, 218)",
-    "rgb(218, 0, 171)",
-    "rgb(230, 64, 92)",
-    "rgb(232, 98, 63)",
-    "rgb(249, 129, 47)",
+    "#FF0000", // Vibrant Red
+    "#FF7F00", // Vibrant Orange
+    "#FFFF00", // Vibrant Yellow
+    "#00FF00", // Vibrant Green
+    "#00FFFF", // Vibrant Cyan
+    "#0000FF", // Vibrant Blue
+    "#8B00FF", // Vibrant Violet/Purple
+    "#FF00FF", // Vibrant Magenta
   ];
 
   const [currentColors, setCurrentColors] = React.useState(colors);
@@ -39,9 +38,9 @@ export function ColourfulText({ text }: { text: string }) {
           animate={{
             color: currentColors[index % currentColors.length],
             y: [0, -3, 0],
-            scale: [1, 1.01, 1],
-            filter: ["blur(0px)", "blur(5px)", "blur(0px)"],
-            opacity: [1, 0.8, 1],
+            scale: [1, 1.05, 1],
+            filter: ["blur(0px)", "blur(3px)", "blur(0px)"],
+            opacity: [1, 0.9, 1],
           }}
           transition={{
             duration: 0.5,
