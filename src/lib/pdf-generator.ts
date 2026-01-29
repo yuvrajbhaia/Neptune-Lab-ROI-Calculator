@@ -158,6 +158,55 @@ function drawBulletIcon(doc: jsPDF, x: number, y: number, color: [number, number
   doc.line(x - 0.3, y - 1, x + 0.8, y - 2.2);
 }
 
+// Helper to draw email icon (envelope)
+function drawEmailIcon(doc: jsPDF, x: number, y: number, size: number, color: [number, number, number]) {
+  doc.setDrawColor(...color);
+  doc.setLineWidth(0.3);
+  // Envelope outline
+  doc.rect(x, y, size, size * 0.7);
+  // Envelope flap
+  doc.line(x, y, x + size / 2, y + size * 0.4);
+  doc.line(x + size, y, x + size / 2, y + size * 0.4);
+}
+
+// Helper to draw phone icon
+function drawPhoneIcon(doc: jsPDF, x: number, y: number, size: number, color: [number, number, number]) {
+  doc.setDrawColor(...color);
+  doc.setLineWidth(0.3);
+  // Phone receiver curve
+  const cx = x + size / 2;
+  const cy = y + size / 2;
+  doc.arc(cx - size * 0.2, cy - size * 0.2, size * 0.3, size * 0.3, 45, 135);
+  doc.arc(cx + size * 0.2, cy + size * 0.2, size * 0.3, size * 0.3, 225, 315);
+}
+
+// Helper to draw WhatsApp icon (phone in speech bubble)
+function drawWhatsAppIcon(doc: jsPDF, x: number, y: number, size: number, color: [number, number, number]) {
+  doc.setDrawColor(...color);
+  doc.setLineWidth(0.3);
+  // Speech bubble
+  doc.circle(x + size / 2, y + size / 2, size * 0.4);
+  // Small tail
+  doc.line(x + size * 0.3, y + size * 0.8, x + size * 0.2, y + size);
+}
+
+// Helper to draw website icon (globe)
+function drawGlobeIcon(doc: jsPDF, x: number, y: number, size: number, color: [number, number, number]) {
+  doc.setDrawColor(...color);
+  doc.setLineWidth(0.3);
+  const cx = x + size / 2;
+  const cy = y + size / 2;
+  const r = size * 0.4;
+  // Circle
+  doc.circle(cx, cy, r);
+  // Vertical line
+  doc.line(cx, cy - r, cx, cy + r);
+  // Horizontal line
+  doc.line(cx - r, cy, cx + r, cy);
+  // Curved lines
+  doc.ellipse(cx, cy, r * 0.5, r);
+}
+
 export async function generateROIReport(data: PDFData): Promise<jsPDF> {
   const doc = new jsPDF();
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -560,40 +609,45 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
   doc.setTextColor(...lightGray);
   doc.text("Contact us today to discuss how Neptune Lab can solve your production challenges.", pageWidth / 2, yPosition + 18, { align: 'center' });
 
-  // Contact info with clickable links - BETTER FORMATTING
-  const contactY = yPosition + 28;
+  // Contact info with clickable icons and text
+  const contactY = yPosition + 26;
+  const iconSize = 4;
 
-  doc.setFontSize(8);
+  doc.setFontSize(7.5);
   doc.setTextColor(...primaryColor);
   doc.setFont("helvetica", "normal");
 
   // Email
-  const emailText = "Email: nikunj@neptuneplastic.net";
+  const emailX = pageWidth / 4 - 20;
+  drawEmailIcon(doc, emailX, contactY - 2, iconSize, primaryColor);
+  const emailText = "nikunj@neptuneplastic.net";
+  doc.text(emailText, emailX + iconSize + 2, contactY + 1);
   const emailWidth = doc.getTextWidth(emailText);
-  const emailX = pageWidth / 4 - emailWidth / 2;
-  doc.text(emailText, emailX, contactY);
-  doc.link(emailX, contactY - 3, emailWidth, 5, { url: "mailto:nikunj@neptuneplastic.net" });
+  doc.link(emailX, contactY - 2, iconSize + emailWidth + 2, iconSize + 2, { url: "mailto:nikunj@neptuneplastic.net" });
 
   // Phone
-  const phoneText = "Call: +91 9830569698";
+  const phoneX = pageWidth / 2 - 18;
+  drawPhoneIcon(doc, phoneX, contactY - 2, iconSize, primaryColor);
+  const phoneText = "+91 9830569698";
+  doc.text(phoneText, phoneX + iconSize + 2, contactY + 1);
   const phoneWidth = doc.getTextWidth(phoneText);
-  const phoneX = pageWidth / 2 - phoneWidth / 2;
-  doc.text(phoneText, phoneX, contactY);
-  doc.link(phoneX, contactY - 3, phoneWidth, 5, { url: "tel:+919830569698" });
+  doc.link(phoneX, contactY - 2, iconSize + phoneWidth + 2, iconSize + 2, { url: "tel:+919830569698" });
 
   // WhatsApp
-  const whatsappText = "WhatsApp: +91 7439505779";
+  const whatsappX = (3 * pageWidth) / 4 - 20;
+  drawWhatsAppIcon(doc, whatsappX, contactY - 2, iconSize, primaryColor);
+  const whatsappText = "+91 7439505779";
+  doc.text(whatsappText, whatsappX + iconSize + 2, contactY + 1);
   const whatsappWidth = doc.getTextWidth(whatsappText);
-  const whatsappX = (3 * pageWidth) / 4 - whatsappWidth / 2;
-  doc.text(whatsappText, whatsappX, contactY);
-  doc.link(whatsappX, contactY - 3, whatsappWidth, 5, { url: "https://wa.me/917439505779" });
+  doc.link(whatsappX, contactY - 2, iconSize + whatsappWidth + 2, iconSize + 2, { url: "https://wa.me/917439505779" });
 
   // Website (centered on second line)
-  const websiteText = "Website: neptuneplastic.net";
+  const websiteX = pageWidth / 2 - 16;
+  drawGlobeIcon(doc, websiteX, contactY + 6, iconSize, primaryColor);
+  const websiteText = "neptuneplastic.net";
+  doc.text(websiteText, websiteX + iconSize + 2, contactY + 9);
   const websiteWidth = doc.getTextWidth(websiteText);
-  const websiteX = pageWidth / 2 - websiteWidth / 2;
-  doc.text(websiteText, websiteX, contactY + 7);
-  doc.link(websiteX, contactY + 4, websiteWidth, 5, { url: "https://neptuneplastic.net/" });
+  doc.link(websiteX, contactY + 6, iconSize + websiteWidth + 2, iconSize + 2, { url: "https://neptuneplastic.net/" });
 
   // Page footer
   const footerY = pageHeight - 15;
