@@ -4,6 +4,7 @@ import { Stats } from "@/components/landing/stats";
 import { GlobalReach } from "@/components/landing/global-reach";
 import { VideoSection } from "@/components/landing/video-section";
 import { Customers } from "@/components/landing/customers";
+import { Footer } from "@/components/landing/footer";
 
 export default function Home() {
   return (
@@ -14,15 +15,7 @@ export default function Home() {
       <GlobalReach />
       <VideoSection />
       <Customers />
-
-      {/* Footer */}
-      <footer className="py-12 border-t border-gray-100">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <p className="text-sm text-gray-400">
-            © {new Date().getFullYear()} Neptune Plastics. Est. 1968.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
