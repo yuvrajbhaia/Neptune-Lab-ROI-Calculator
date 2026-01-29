@@ -32,7 +32,11 @@ export async function onRequest(context: any) {
 
     const payload = {
       timestamp,
-      lead: data.lead,
+      lead: {
+        ...data.lead,
+        // Convert array to comma-separated string for Google Sheets
+        quotationTypes: data.lead.quotationTypes?.join(", ") || "",
+      },
       total: data.total,
       inputs: data.inputs,
       pain1: {

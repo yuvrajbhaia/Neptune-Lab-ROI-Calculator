@@ -4,7 +4,13 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Check } from "lucide-react";
+
+// Quotation options
+const QUOTATION_OPTIONS = [
+  "25mm Raffia Tape Lab Extrusion line (INR)",
+  "25mm Blown film Lab Extrusion Line (INR)",
+] as const;
 
 // Country code mapping
 const COUNTRIES = [
@@ -34,6 +40,7 @@ export interface LeadFormData {
   name: string;
   position: string;
   company: string;
+  quotationTypes: string[];
   country: string;
   countryCode: string;
   phone: string;
@@ -45,13 +52,14 @@ export function LeadForm({ onSubmit, isLoading }: LeadFormProps) {
     name: "",
     position: "",
     company: "",
+    quotationTypes: [],
     country: "India",
     countryCode: "+91",
     phone: "",
     email: "",
   });
 
-  const [errors, setErrors] = useState<Partial<LeadFormData>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof LeadFormData, string>>>({});
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCountry = e.target.value;
@@ -69,12 +77,31 @@ export function LeadForm({ onSubmit, isLoading }: LeadFormProps) {
     }
   };
 
+  const handleQuotationToggle = (quotationType: string) => {
+    setFormData((prev) => {
+      const currentTypes = prev.quotationTypes;
+      const newTypes = currentTypes.includes(quotationType)
+        ? currentTypes.filter(t => t !== quotationType)
+        : [...currentTypes, quotationType];
+
+      return { ...prev, quotationTypes: newTypes };
+    });
+
+    // Clear error if at least one is now selected
+    if (errors.quotationTypes) {
+      setErrors(prev => ({ ...prev, quotationTypes: undefined }));
+    }
+  };
+
   const validate = (): boolean => {
-    const newErrors: Partial<LeadFormData> = {};
+    const newErrors: Partial<Record<keyof LeadFormData, string>> = {};
 
     if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.position.trim()) newErrors.position = "Position is required";
     if (!formData.company.trim()) newErrors.company = "Company name is required";
+    if (formData.quotationTypes.length === 0) {
+      newErrors.quotationTypes = "Please select at least one quotation type";
+    }
     if (!formData.country.trim()) newErrors.country = "Country is required";
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
@@ -149,6 +176,45 @@ export function LeadForm({ onSubmit, isLoading }: LeadFormProps) {
           error={errors.company}
           disabled={isLoading}
         />
+
+        {/* Quotation Type Multi-Select */}
+        <div>
+          <label className="block text-sm font-medium text-[#1A1A1A] mb-2">
+            Quotation Type <span className="text-red-500">*</span>
+          </label>
+          <div className="space-y-3">
+            {QUOTATION_OPTIONS.map((option) => (
+              <label
+                key={option}
+                className="flex items-start gap-3 cursor-pointer group"
+              >
+                {/* Custom Checkbox */}
+                <div
+                  className={`flex-shrink-0 w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all mt-0.5 ${
+                    formData.quotationTypes.includes(option)
+                      ? "border-[#E07A5F] bg-[#E07A5F]"
+                      : "border-[#D1D5DB] bg-white group-hover:border-[#E07A5F]/50"
+                  } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  onClick={() => !isLoading && handleQuotationToggle(option)}
+                >
+                  {formData.quotationTypes.includes(option) && (
+                    <Check className="w-4 h-4 text-white" />
+                  )}
+                </div>
+
+                {/* Label Text */}
+                <div className="flex-1">
+                  <span className="text-base text-[#1A1A1A]">
+                    {option}
+                  </span>
+                </div>
+              </label>
+            ))}
+          </div>
+          {errors.quotationTypes && (
+            <p className="text-red-500 text-sm mt-2">{errors.quotationTypes}</p>
+          )}
+        </div>
 
         {/* Country Selector and Country Code Display */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
