@@ -38,6 +38,15 @@ function checkPageBreak(doc: jsPDF, yPosition: number, requiredSpace: number): n
   return yPosition;
 }
 
+// Helper to format currency for PDF (avoiding Unicode issues)
+function formatPDFCurrency(amount: number): string {
+  const formatted = amount.toLocaleString('en-IN', {
+    maximumFractionDigits: 0,
+    useGrouping: true,
+  });
+  return `Rs. ${formatted}`;
+}
+
 // Helper function to get calculation inputs for table format
 function getPainCalculationTable(painId: number, data: PDFData): string[][] {
   const factory = data.inputs.factory;
@@ -53,12 +62,12 @@ function getPainCalculationTable(painId: number, data: PDFData): string[][] {
         ['Rejected trials per month', `${trials} trials`],
         ['Output per hour', `${output} kg/hr`],
         ['Run time per batch', `${runTime} hours`],
-        ['Material cost per kg', `₹${factory.materialCostPerKg}/kg`],
-        ['Processing cost per kg', `₹${factory.processingCostPerKg}/kg`],
-        ['Total cost per kg', `₹${totalCostPerKg}/kg`],
+        ['Material cost per kg', `Rs. ${factory.materialCostPerKg}/kg`],
+        ['Processing cost per kg', `Rs. ${factory.processingCostPerKg}/kg`],
+        ['Total cost per kg', `Rs. ${totalCostPerKg}/kg`],
         ['', ''],
-        ['Formula', `${trials} × ${output} × ${runTime} × ₹${totalCostPerKg}`],
-        ['Monthly Impact', formatCurrency(monthlyLoss)],
+        ['Formula', `${trials} × ${output} × ${runTime} × Rs. ${totalCostPerKg}`],
+        ['Monthly Impact', formatPDFCurrency(monthlyLoss)],
       ];
     }
     case 2: {
@@ -68,13 +77,13 @@ function getPainCalculationTable(painId: number, data: PDFData): string[][] {
       const days = factory.workingDaysPerMonth;
       const monthlyLoss = savings * output * hours * days;
       return [
-        ['Pigment savings per kg', `₹${savings}/kg`],
+        ['Pigment savings per kg', `Rs. ${savings}/kg`],
         ['Output per hour', `${output} kg/hr`],
         ['Working hours per day', `${hours} hrs`],
         ['Working days per month', `${days} days`],
         ['', ''],
-        ['Formula', `₹${savings} × ${output} × ${hours} × ${days}`],
-        ['Monthly Impact', formatCurrency(monthlyLoss)],
+        ['Formula', `Rs. ${savings} × ${output} × ${hours} × ${days}`],
+        ['Monthly Impact', formatPDFCurrency(monthlyLoss)],
       ];
     }
     case 3: {
@@ -83,10 +92,10 @@ function getPainCalculationTable(painId: number, data: PDFData): string[][] {
       const annualLoss = requests * loss;
       return [
         ['Small batch requests per year', `${requests}`],
-        ['Loss per case', formatCurrency(loss)],
+        ['Loss per case', formatPDFCurrency(loss)],
         ['', ''],
-        ['Formula', `${requests} × ${formatCurrency(loss)}`],
-        ['Annual Impact', formatCurrency(annualLoss)],
+        ['Formula', `${requests} × ${formatPDFCurrency(loss)}`],
+        ['Annual Impact', formatPDFCurrency(annualLoss)],
       ];
     }
     case 4: {
@@ -95,10 +104,10 @@ function getPainCalculationTable(painId: number, data: PDFData): string[][] {
       const annualLoss = requests * loss;
       return [
         ['Experiment requests per year', `${requests}`],
-        ['Loss per case', formatCurrency(loss)],
+        ['Loss per case', formatPDFCurrency(loss)],
         ['', ''],
-        ['Formula', `${requests} × ${formatCurrency(loss)}`],
-        ['Annual Impact', formatCurrency(annualLoss)],
+        ['Formula', `${requests} × ${formatPDFCurrency(loss)}`],
+        ['Annual Impact', formatPDFCurrency(annualLoss)],
       ];
     }
     case 5: {
@@ -109,14 +118,14 @@ function getPainCalculationTable(painId: number, data: PDFData): string[][] {
       const days = factory.workingDaysPerMonth;
       const monthlyLoss = savings * output * hours * days * machines;
       return [
-        ['Recycled material savings per kg', `₹${savings}/kg`],
+        ['Recycled material savings per kg', `Rs. ${savings}/kg`],
         ['Number of machines', `${machines}`],
         ['Output per hour', `${output} kg/hr`],
         ['Working hours per day', `${hours} hrs`],
         ['Working days per month', `${days} days`],
         ['', ''],
-        ['Formula', `₹${savings} × ${output} × ${hours} × ${days} × ${machines}`],
-        ['Monthly Impact', formatCurrency(monthlyLoss)],
+        ['Formula', `Rs. ${savings} × ${output} × ${hours} × ${days} × ${machines}`],
+        ['Monthly Impact', formatPDFCurrency(monthlyLoss)],
       ];
     }
     case 6: {
@@ -125,10 +134,10 @@ function getPainCalculationTable(painId: number, data: PDFData): string[][] {
       const annualLoss = requests * loss;
       return [
         ['Peak season requests per year', `${requests}`],
-        ['Loss per case', formatCurrency(loss)],
+        ['Loss per case', formatPDFCurrency(loss)],
         ['', ''],
-        ['Formula', `${requests} × ${formatCurrency(loss)}`],
-        ['Annual Impact', formatCurrency(annualLoss)],
+        ['Formula', `${requests} × ${formatPDFCurrency(loss)}`],
+        ['Annual Impact', formatPDFCurrency(annualLoss)],
       ];
     }
     default:
@@ -214,8 +223,8 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
       ['Output per hour', `${data.inputs.factory.outputPerHour} kg/hr`],
       ['Working hours per day', `${data.inputs.factory.workingHoursPerDay} hrs`],
       ['Working days per month', `${data.inputs.factory.workingDaysPerMonth} days`],
-      ['Material cost per kg', `₹${data.inputs.factory.materialCostPerKg}/kg`],
-      ['Processing cost per kg', `₹${data.inputs.factory.processingCostPerKg}/kg`],
+      ['Material cost per kg', `Rs. ${data.inputs.factory.materialCostPerKg}/kg`],
+      ['Processing cost per kg', `Rs. ${data.inputs.factory.processingCostPerKg}/kg`],
     ],
     theme: 'grid',
     headStyles: {
@@ -290,10 +299,12 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
       autoTable(doc, {
         startY: yPosition,
         body: calcTable,
-        theme: 'plain',
+        theme: 'grid',
         styles: {
           fontSize: 9,
-          cellPadding: 2,
+          cellPadding: 3,
+          lineColor: lightGray,
+          lineWidth: 0.1,
         },
         columnStyles: {
           0: {
@@ -313,12 +324,14 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
             // Formula row
             data.cell.styles.fontStyle = 'bold';
             data.cell.styles.textColor = [26, 26, 26];
+            data.cell.styles.fillColor = [249, 250, 251];
           }
           if (data.row.index === calcTable.length - 1) {
             // Result row
             data.cell.styles.fontSize = 11;
             data.cell.styles.fontStyle = 'bold';
             data.cell.styles.textColor = primaryColor;
+            data.cell.styles.fillColor = [249, 250, 251];
           }
         },
       });
@@ -337,7 +350,7 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...primaryColor);
-      doc.text(formatCurrency(pain.monthlyLoss), 20, yPosition + 15);
+      doc.text(formatPDFCurrency(pain.monthlyLoss), 20, yPosition + 15);
 
       doc.setFontSize(9);
       doc.setFont("helvetica", "normal");
@@ -347,7 +360,7 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...primaryColor);
-      doc.text(formatCurrency(pain.annualLoss), pageWidth / 2 + 10, yPosition + 15);
+      doc.text(formatPDFCurrency(pain.annualLoss), pageWidth / 2 + 10, yPosition + 15);
 
       yPosition += 28;
     }
@@ -443,7 +456,7 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
 
   doc.setFontSize(22);
   doc.setFont("helvetica", "bold");
-  doc.text(formatCurrency(data.total), leftX, boxY + 12);
+  doc.text(formatPDFCurrency(data.total), leftX, boxY + 12);
 
   // Monthly Savings
   doc.setFontSize(10);
@@ -452,7 +465,7 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
 
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
-  doc.text(formatCurrency(data.total / 12), leftX, boxY + 38);
+  doc.text(formatPDFCurrency(data.total / 12), leftX, boxY + 38);
 
   // 5-Year Savings
   doc.setFontSize(10);
@@ -461,7 +474,7 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
 
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
-  doc.text(formatCurrency(data.total * 5), rightX, boxY + 10);
+  doc.text(formatPDFCurrency(data.total * 5), rightX, boxY + 10);
 
   // Payback Period
   doc.setFontSize(10);

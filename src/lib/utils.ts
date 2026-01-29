@@ -6,10 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number): string {
-  // Format number with Indian locale separators but custom currency symbol
-  const formatted = new Intl.NumberFormat('en-IN', {
+  // Use basic number formatting without any locale-specific currency formatting
+  // This avoids the superscript issue with Indian rupee symbol
+  const formatted = amount.toLocaleString('en-IN', {
     maximumFractionDigits: 0,
-  }).format(amount);
+    useGrouping: true,
+  });
+  // Manually prefix with rupee symbol
   return `₹${formatted}`;
 }
 
