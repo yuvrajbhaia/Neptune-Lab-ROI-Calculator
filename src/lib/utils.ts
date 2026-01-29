@@ -6,11 +6,11 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
+  // Format number with Indian locale separators but custom currency symbol
+  const formatted = new Intl.NumberFormat('en-IN', {
     maximumFractionDigits: 0,
-  }).format(amount)
+  }).format(amount);
+  return `₹${formatted}`;
 }
 
 export function formatNumber(num: number): string {

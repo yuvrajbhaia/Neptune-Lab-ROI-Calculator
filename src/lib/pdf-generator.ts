@@ -38,8 +38,8 @@ function checkPageBreak(doc: jsPDF, yPosition: number, requiredSpace: number): n
   return yPosition;
 }
 
-// Helper function to get calculation breakdown for each pain point
-function getPainCalculationBreakdown(painId: number, data: PDFData): string[] {
+// Helper function to get calculation inputs for table format
+function getPainCalculationTable(painId: number, data: PDFData): string[][] {
   const factory = data.inputs.factory;
   const totalCostPerKg = factory.materialCostPerKg + factory.processingCostPerKg;
 
@@ -48,16 +48,17 @@ function getPainCalculationBreakdown(painId: number, data: PDFData): string[] {
       const trials = data.inputs.pain1.rejectedTrialsPerMonth;
       const runTime = data.inputs.pain1.runTimePerBatch;
       const output = factory.outputPerHour;
+      const monthlyLoss = trials * output * runTime * totalCostPerKg;
       return [
-        `• Rejected trials per month: ${trials} trials`,
-        `• Output per hour: ${output} kg/hr`,
-        `• Run time per batch: ${runTime} hours`,
-        `• Material cost: ₹${factory.materialCostPerKg}/kg`,
-        `• Processing cost: ₹${factory.processingCostPerKg}/kg`,
-        `• Total cost per kg: ₹${totalCostPerKg}/kg`,
-        ``,
-        `Calculation:`,
-        `${trials} trials × ${output} kg/hr × ${runTime} hrs × ₹${totalCostPerKg}/kg = ${formatCurrency(trials * output * runTime * totalCostPerKg)}/month`
+        ['Rejected trials per month', `${trials} trials`],
+        ['Output per hour', `${output} kg/hr`],
+        ['Run time per batch', `${runTime} hours`],
+        ['Material cost per kg', `₹${factory.materialCostPerKg}/kg`],
+        ['Processing cost per kg', `₹${factory.processingCostPerKg}/kg`],
+        ['Total cost per kg', `₹${totalCostPerKg}/kg`],
+        ['', ''],
+        ['Formula', `${trials} × ${output} × ${runTime} × ₹${totalCostPerKg}`],
+        ['Monthly Impact', formatCurrency(monthlyLoss)],
       ];
     }
     case 2: {
@@ -65,36 +66,39 @@ function getPainCalculationBreakdown(painId: number, data: PDFData): string[] {
       const output = factory.outputPerHour;
       const hours = factory.workingHoursPerDay;
       const days = factory.workingDaysPerMonth;
+      const monthlyLoss = savings * output * hours * days;
       return [
-        `• Pigment savings per kg: ₹${savings}/kg`,
-        `• Output per hour: ${output} kg/hr`,
-        `• Working hours per day: ${hours} hrs`,
-        `• Working days per month: ${days} days`,
-        ``,
-        `Calculation:`,
-        `₹${savings}/kg × ${output} kg/hr × ${hours} hrs/day × ${days} days = ${formatCurrency(savings * output * hours * days)}/month`
+        ['Pigment savings per kg', `₹${savings}/kg`],
+        ['Output per hour', `${output} kg/hr`],
+        ['Working hours per day', `${hours} hrs`],
+        ['Working days per month', `${days} days`],
+        ['', ''],
+        ['Formula', `₹${savings} × ${output} × ${hours} × ${days}`],
+        ['Monthly Impact', formatCurrency(monthlyLoss)],
       ];
     }
     case 3: {
       const requests = data.inputs.pain3.smallBatchRequestsPerYear;
       const loss = data.inputs.pain3.lossPerCase;
+      const annualLoss = requests * loss;
       return [
-        `• Small batch requests per year: ${requests}`,
-        `• Loss per case: ${formatCurrency(loss)}`,
-        ``,
-        `Calculation:`,
-        `${requests} requests × ${formatCurrency(loss)} = ${formatCurrency(requests * loss)}/year`
+        ['Small batch requests per year', `${requests}`],
+        ['Loss per case', formatCurrency(loss)],
+        ['', ''],
+        ['Formula', `${requests} × ${formatCurrency(loss)}`],
+        ['Annual Impact', formatCurrency(annualLoss)],
       ];
     }
     case 4: {
       const requests = data.inputs.pain4.experimentRequestsPerYear;
       const loss = data.inputs.pain4.lossPerCase;
+      const annualLoss = requests * loss;
       return [
-        `• Experiment requests per year: ${requests}`,
-        `• Loss per case: ${formatCurrency(loss)}`,
-        ``,
-        `Calculation:`,
-        `${requests} experiments × ${formatCurrency(loss)} = ${formatCurrency(requests * loss)}/year`
+        ['Experiment requests per year', `${requests}`],
+        ['Loss per case', formatCurrency(loss)],
+        ['', ''],
+        ['Formula', `${requests} × ${formatCurrency(loss)}`],
+        ['Annual Impact', formatCurrency(annualLoss)],
       ];
     }
     case 5: {
@@ -103,31 +107,46 @@ function getPainCalculationBreakdown(painId: number, data: PDFData): string[] {
       const output = factory.outputPerHour;
       const hours = factory.workingHoursPerDay;
       const days = factory.workingDaysPerMonth;
+      const monthlyLoss = savings * output * hours * days * machines;
       return [
-        `• Recycled material savings per kg: ₹${savings}/kg`,
-        `• Number of machines: ${machines}`,
-        `• Output per hour: ${output} kg/hr`,
-        `• Working hours per day: ${hours} hrs`,
-        `• Working days per month: ${days} days`,
-        ``,
-        `Calculation:`,
-        `₹${savings}/kg × ${output} kg/hr × ${hours} hrs × ${days} days × ${machines} machines = ${formatCurrency(savings * output * hours * days * machines)}/month`
+        ['Recycled material savings per kg', `₹${savings}/kg`],
+        ['Number of machines', `${machines}`],
+        ['Output per hour', `${output} kg/hr`],
+        ['Working hours per day', `${hours} hrs`],
+        ['Working days per month', `${days} days`],
+        ['', ''],
+        ['Formula', `₹${savings} × ${output} × ${hours} × ${days} × ${machines}`],
+        ['Monthly Impact', formatCurrency(monthlyLoss)],
       ];
     }
     case 6: {
       const requests = data.inputs.pain6.peakSeasonRequestsPerYear;
       const loss = data.inputs.pain6.lossPerCase;
+      const annualLoss = requests * loss;
       return [
-        `• Peak season requests per year: ${requests}`,
-        `• Loss per case: ${formatCurrency(loss)}`,
-        ``,
-        `Calculation:`,
-        `${requests} requests × ${formatCurrency(loss)} = ${formatCurrency(requests * loss)}/year`
+        ['Peak season requests per year', `${requests}`],
+        ['Loss per case', formatCurrency(loss)],
+        ['', ''],
+        ['Formula', `${requests} × ${formatCurrency(loss)}`],
+        ['Annual Impact', formatCurrency(annualLoss)],
       ];
     }
     default:
       return [];
   }
+}
+
+// Helper to draw a simple icon (circle with checkmark-like symbol)
+function drawBulletIcon(doc: jsPDF, x: number, y: number, color: [number, number, number]) {
+  // Draw small circle
+  doc.setFillColor(...color);
+  doc.circle(x, y - 1.5, 1.5, 'F');
+
+  // Draw checkmark inside
+  doc.setDrawColor(255, 255, 255);
+  doc.setLineWidth(0.3);
+  doc.line(x - 0.8, y - 1.5, x - 0.3, y - 1);
+  doc.line(x - 0.3, y - 1, x + 0.8, y - 2.2);
 }
 
 export async function generateROIReport(data: PDFData): Promise<jsPDF> {
@@ -229,18 +248,19 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
     doc.text("Pain Points & Impact Analysis", 15, yPosition);
     yPosition += 10;
 
-    // For each pain point, create a detailed section
+    // For each pain point, create a detailed section with sequential numbering
     for (let i = 0; i < selectedPains.length; i++) {
       const pain = selectedPains[i];
+      const sequentialNumber = i + 1; // Sequential: 1, 2, 3, 4...
 
       // Check if we need a new page
       yPosition = checkPageBreak(doc, yPosition, 80);
 
-      // Pain point title
+      // Pain point title with SEQUENTIAL number
       doc.setFontSize(12);
       doc.setFont("helvetica", "bold");
       doc.setTextColor(...primaryColor);
-      doc.text(`Pain Point ${pain.id}: ${pain.title}`, 15, yPosition);
+      doc.text(`Pain Point ${sequentialNumber}: ${pain.title}`, 15, yPosition);
       yPosition += 8;
 
       // Separator line
@@ -264,30 +284,46 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
       doc.text("Financial Impact Calculation:", 15, yPosition);
       yPosition += 8;
 
-      // Calculation breakdown
-      const breakdown = getPainCalculationBreakdown(pain.id, data);
-      doc.setFontSize(9);
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(...lightGray);
+      // Calculation breakdown TABLE
+      const calcTable = getPainCalculationTable(pain.id, data);
 
-      for (const line of breakdown) {
-        if (line === '') {
-          yPosition += 3;
-        } else if (line.startsWith('Calculation:')) {
-          yPosition += 2;
-          doc.setFont("helvetica", "bold");
-          doc.setTextColor(...darkGray);
-          doc.text(line, 15, yPosition);
-          doc.setFont("helvetica", "normal");
-          doc.setTextColor(...lightGray);
-          yPosition += 6;
-        } else {
-          doc.text(line, 15, yPosition);
-          yPosition += 5;
-        }
-      }
+      autoTable(doc, {
+        startY: yPosition,
+        body: calcTable,
+        theme: 'plain',
+        styles: {
+          fontSize: 9,
+          cellPadding: 2,
+        },
+        columnStyles: {
+          0: {
+            textColor: lightGray,
+            cellWidth: 65,
+          },
+          1: {
+            textColor: darkGray,
+            fontStyle: 'bold',
+            cellWidth: 'auto',
+          },
+        },
+        margin: { left: 20, right: 15 },
+        didParseCell: function(data) {
+          // Make formula and result rows stand out
+          if (data.row.index === calcTable.length - 2) {
+            // Formula row
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = [26, 26, 26];
+          }
+          if (data.row.index === calcTable.length - 1) {
+            // Result row
+            data.cell.styles.fontSize = 11;
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.textColor = primaryColor;
+          }
+        },
+      });
 
-      yPosition += 5;
+      yPosition = (doc as any).lastAutoTable.finalY + 8;
 
       // Results box
       doc.setFillColor(249, 250, 251);
@@ -347,7 +383,7 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
   doc.text("Hidden Costs You're Currently Facing:", 15, yPosition);
   yPosition += 8;
 
-  // Benefits list
+  // Benefits list with professional icons
   const benefits = [
     "Transportation costs for rejected batches sent back and forth",
     "Loss of customer confidence and strained relationships",
@@ -359,15 +395,18 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
 
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
-  doc.setTextColor(...lightGray);
+  doc.setTextColor(...darkGray);
 
   for (const benefit of benefits) {
-    const benefitLines = doc.splitTextToSize(`• ${benefit}`, pageWidth - 35);
-    doc.text(benefitLines, 20, yPosition);
-    yPosition += benefitLines.length * 5 + 2;
+    // Draw professional bullet icon
+    drawBulletIcon(doc, 20, yPosition, primaryColor);
+
+    const benefitLines = doc.splitTextToSize(benefit, pageWidth - 40);
+    doc.text(benefitLines, 25, yPosition);
+    yPosition += benefitLines.length * 5 + 3;
   }
 
-  yPosition += 6;
+  yPosition += 4;
 
   // Conclusion
   const conclusionText = "These intangible factors compound your losses but are difficult to quantify. The Neptune Lab eliminates these concerns entirely, giving you confidence, flexibility, and peace of mind.";
@@ -491,11 +530,11 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
   yPosition = logoY + (logoCount % logosPerRow === 0 ? 0 : logoHeight) + 20;
 
   // ===== FOOTER WITH CONTACT INFO =====
-  yPosition = checkPageBreak(doc, yPosition, 40);
+  yPosition = checkPageBreak(doc, yPosition, 45);
 
   // CTA Box
   doc.setFillColor(249, 250, 251);
-  doc.roundedRect(15, yPosition, pageWidth - 30, 35, 3, 3, 'F');
+  doc.roundedRect(15, yPosition, pageWidth - 30, 40, 3, 3, 'F');
 
   // CTA Text
   doc.setTextColor(...darkGray);
@@ -508,39 +547,40 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
   doc.setTextColor(...lightGray);
   doc.text("Contact us today to discuss how Neptune Lab can solve your production challenges.", pageWidth / 2, yPosition + 18, { align: 'center' });
 
-  // Contact info with clickable links
+  // Contact info with clickable links - BETTER FORMATTING
   const contactY = yPosition + 28;
-  const contactSpacing = (pageWidth - 30) / 4;
 
-  // Email
   doc.setFontSize(8);
   doc.setTextColor(...primaryColor);
-  const emailX = 15 + contactSpacing * 0.5;
-  doc.textWithLink("📧 nikunj@neptuneplastic.net", emailX, contactY, {
-    url: "mailto:nikunj@neptuneplastic.net",
-    align: 'center'
-  });
+  doc.setFont("helvetica", "normal");
+
+  // Email
+  const emailText = "Email: nikunj@neptuneplastic.net";
+  const emailWidth = doc.getTextWidth(emailText);
+  const emailX = pageWidth / 4 - emailWidth / 2;
+  doc.text(emailText, emailX, contactY);
+  doc.link(emailX, contactY - 3, emailWidth, 5, { url: "mailto:nikunj@neptuneplastic.net" });
 
   // Phone
-  const phoneX = 15 + contactSpacing * 1.5;
-  doc.textWithLink("📞 +91 9830569698", phoneX, contactY, {
-    url: "tel:+919830569698",
-    align: 'center'
-  });
+  const phoneText = "Call: +91 9830569698";
+  const phoneWidth = doc.getTextWidth(phoneText);
+  const phoneX = pageWidth / 2 - phoneWidth / 2;
+  doc.text(phoneText, phoneX, contactY);
+  doc.link(phoneX, contactY - 3, phoneWidth, 5, { url: "tel:+919830569698" });
 
   // WhatsApp
-  const whatsappX = 15 + contactSpacing * 2.5;
-  doc.textWithLink("💬 +91 7439505779", whatsappX, contactY, {
-    url: "https://wa.me/917439505779",
-    align: 'center'
-  });
+  const whatsappText = "WhatsApp: +91 7439505779";
+  const whatsappWidth = doc.getTextWidth(whatsappText);
+  const whatsappX = (3 * pageWidth) / 4 - whatsappWidth / 2;
+  doc.text(whatsappText, whatsappX, contactY);
+  doc.link(whatsappX, contactY - 3, whatsappWidth, 5, { url: "https://wa.me/917439505779" });
 
-  // Website
-  const websiteX = 15 + contactSpacing * 3.5;
-  doc.textWithLink("🌐 neptuneplastic.net", websiteX, contactY, {
-    url: "https://neptuneplastic.net/",
-    align: 'center'
-  });
+  // Website (centered on second line)
+  const websiteText = "Website: neptuneplastic.net";
+  const websiteWidth = doc.getTextWidth(websiteText);
+  const websiteX = pageWidth / 2 - websiteWidth / 2;
+  doc.text(websiteText, websiteX, contactY + 7);
+  doc.link(websiteX, contactY + 4, websiteWidth, 5, { url: "https://neptuneplastic.net/" });
 
   // Page footer
   const footerY = pageHeight - 15;
