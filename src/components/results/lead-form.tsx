@@ -6,6 +6,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Loader2 } from "lucide-react";
 
+// Country code mapping
+const COUNTRIES = [
+  { name: "India", code: "+91" },
+  { name: "United States", code: "+1" },
+  { name: "Canada", code: "+1" },
+  { name: "United Kingdom", code: "+44" },
+  { name: "UAE", code: "+971" },
+  { name: "Singapore", code: "+65" },
+  { name: "Australia", code: "+61" },
+  { name: "Germany", code: "+49" },
+  { name: "France", code: "+33" },
+  { name: "China", code: "+86" },
+  { name: "Japan", code: "+81" },
+  { name: "South Korea", code: "+82" },
+  { name: "Brazil", code: "+55" },
+  { name: "Mexico", code: "+52" },
+  { name: "Italy", code: "+39" },
+];
+
 interface LeadFormProps {
   onSubmit: (data: LeadFormData) => Promise<void>;
   isLoading: boolean;
@@ -15,6 +34,8 @@ export interface LeadFormData {
   name: string;
   position: string;
   company: string;
+  country: string;
+  countryCode: string;
   phone: string;
   email: string;
 }
@@ -24,11 +45,29 @@ export function LeadForm({ onSubmit, isLoading }: LeadFormProps) {
     name: "",
     position: "",
     company: "",
+    country: "India",
+    countryCode: "+91",
     phone: "",
     email: "",
   });
 
   const [errors, setErrors] = useState<Partial<LeadFormData>>({});
+
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCountry = e.target.value;
+    const country = COUNTRIES.find(c => c.name === selectedCountry);
+
+    setFormData(prev => ({
+      ...prev,
+      country: selectedCountry,
+      countryCode: country?.code || ""
+    }));
+
+    // Clear country error if exists
+    if (errors.country) {
+      setErrors(prev => ({ ...prev, country: undefined }));
+    }
+  };
 
   const validate = (): boolean => {
     const newErrors: Partial<LeadFormData> = {};
@@ -36,6 +75,7 @@ export function LeadForm({ onSubmit, isLoading }: LeadFormProps) {
     if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.position.trim()) newErrors.position = "Position is required";
     if (!formData.company.trim()) newErrors.company = "Company name is required";
+    if (!formData.country.trim()) newErrors.country = "Country is required";
     if (!formData.phone.trim()) {
       newErrors.phone = "Phone number is required";
     } else if (!/^[0-9+\-\s()]+$/.test(formData.phone)) {
@@ -109,6 +149,45 @@ export function LeadForm({ onSubmit, isLoading }: LeadFormProps) {
           error={errors.company}
           disabled={isLoading}
         />
+
+        {/* Country Selector and Country Code Display */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Country Dropdown */}
+          <div>
+            <label htmlFor="country" className="block text-sm font-medium text-[#1A1A1A] mb-2">
+              Country
+            </label>
+            <select
+              id="country"
+              value={formData.country}
+              onChange={handleCountryChange}
+              disabled={isLoading}
+              className={`w-full h-14 px-4 text-base font-semibold text-[#1A1A1A] bg-white border-2 rounded-xl
+                focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-[#E07A5F]
+                transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed
+                ${errors.country ? 'border-red-500' : 'border-[#E5E7EB]'}`}
+            >
+              {COUNTRIES.map((country) => (
+                <option key={`${country.name}-${country.code}`} value={country.name}>
+                  {country.name}
+                </option>
+              ))}
+            </select>
+            {errors.country && (
+              <p className="text-red-500 text-sm mt-1">{errors.country}</p>
+            )}
+          </div>
+
+          {/* Country Code Display (Read-only) */}
+          <div>
+            <label htmlFor="countryCode" className="block text-sm font-medium text-[#1A1A1A] mb-2">
+              Country Code
+            </label>
+            <div className="w-full h-14 px-4 flex items-center text-base font-semibold text-[#1A1A1A] bg-gray-50 border-2 border-[#E5E7EB] rounded-xl">
+              {formData.countryCode}
+            </div>
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
