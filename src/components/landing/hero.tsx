@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ColourfulText } from "@/components/ui/colourful-text";
 
 export function Hero() {
   return (
@@ -16,22 +17,19 @@ export function Hero() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          {/* Small label */}
-          <p className="text-xs sm:text-sm text-gray-500 uppercase tracking-widest mb-4 sm:mb-6">
-            For Masterbatch Manufacturers
-          </p>
-
           {/* Main Headline */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-gray-900 leading-[1.1] mb-4 sm:mb-6 px-2">
-            Stop losing money on
-            <br />
-            <span className="text-[#E07A5F]">production trials</span>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-tight">
+            Still struggling with <ColourfulText text="COLOUR" /> matching?
           </h1>
 
           {/* Subheadline */}
-          <p className="text-base sm:text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-4">
-            Our 25mm Lab Raffia Tape Line helps you test colors, pigments, and
-            materials without disrupting your main production.
+          <p className="text-lg md:text-xl text-[#6B7280] mb-4 max-w-3xl mx-auto">
+            Lab extrusion lines for masterbatch, Raffia tape, film filament and pipes
+          </p>
+
+          {/* Secondary text */}
+          <p className="text-base md:text-lg text-[#E07A5F] mb-8 font-medium">
+            Stop losing money on production trials
           </p>
 
           {/* CTA Button */}
