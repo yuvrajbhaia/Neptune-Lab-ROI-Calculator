@@ -545,7 +545,7 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
   doc.setTextColor(...darkGray);
   doc.setFontSize(14);
   doc.setFont("helvetica", "bold");
-  doc.text("57+ Customers Including Industry Leaders", 15, yPosition);
+  doc.text("Trusted by 57+ industry leaders like -", 15, yPosition);
   yPosition += 10;
 
   // Separator line
@@ -554,47 +554,70 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
   doc.line(15, yPosition, pageWidth - 15, yPosition);
   yPosition += 12;
 
-  // Load and display customer logos in a grid
-  const logoFiles = [
+  // Load and display customer logos in 2 rows
+  // Row 1: Owens Corning, Alok, Tapidor, SCJ
+  // Row 2: Rest of the logos
+  const row1Logos = [
+    '/logos/owens-corning.jpg',
+    '/logos/alok.jpeg',
+    '/logos/tapidor.png',
+    '/logos/scj.png'
+  ];
+
+  const row2Logos = [
     '/logos/bhavin.png',
     '/logos/swastick.png',
-    '/logos/scj.png',
-    '/logos/owens-corning.jpg',
     '/logos/jj-plastalloy.png',
     '/logos/blend-colours.png',
-    '/logos/tapidor.png',
-    '/logos/alok.jpeg',
     '/logos/sonali.jpeg'
   ];
 
-  const logosPerRow = 3;
-  const logoWidth = 40;
-  const logoHeight = 22;
-  const logoSpacing = (pageWidth - 30 - (logosPerRow * logoWidth)) / (logosPerRow - 1);
+  // Row 1 configuration (4 logos)
+  const row1Count = row1Logos.length;
+  const row1LogoWidth = 40;
+  const row1LogoHeight = 22;
+  const row1Spacing = (pageWidth - 30 - (row1Count * row1LogoWidth)) / (row1Count - 1);
 
   let logoX = 15;
   let logoY = yPosition;
-  let logoCount = 0;
 
-  for (const logoFile of logoFiles) {
+  // Draw row 1 logos
+  for (const logoFile of row1Logos) {
     try {
       const logoBase64 = await loadImageAsBase64(logoFile);
       if (logoBase64) {
-        doc.addImage(logoBase64, 'PNG', logoX, logoY, logoWidth, logoHeight);
-        logoCount++;
-        logoX += logoWidth + logoSpacing;
-
-        if (logoCount % logosPerRow === 0) {
-          logoX = 15;
-          logoY += logoHeight + 10;
-        }
+        doc.addImage(logoBase64, 'PNG', logoX, logoY, row1LogoWidth, row1LogoHeight);
+        logoX += row1LogoWidth + row1Spacing;
       }
     } catch (error) {
       console.error(`Failed to load logo: ${logoFile}`, error);
     }
   }
 
-  yPosition = logoY + (logoCount % logosPerRow === 0 ? 0 : logoHeight) + 20;
+  // Move to row 2
+  logoY += row1LogoHeight + 10;
+  logoX = 15;
+
+  // Row 2 configuration (5 logos)
+  const row2Count = row2Logos.length;
+  const row2LogoWidth = 34;
+  const row2LogoHeight = 20;
+  const row2Spacing = (pageWidth - 30 - (row2Count * row2LogoWidth)) / (row2Count - 1);
+
+  // Draw row 2 logos
+  for (const logoFile of row2Logos) {
+    try {
+      const logoBase64 = await loadImageAsBase64(logoFile);
+      if (logoBase64) {
+        doc.addImage(logoBase64, 'PNG', logoX, logoY, row2LogoWidth, row2LogoHeight);
+        logoX += row2LogoWidth + row2Spacing;
+      }
+    } catch (error) {
+      console.error(`Failed to load logo: ${logoFile}`, error);
+    }
+  }
+
+  yPosition = logoY + row2LogoHeight + 20;
 
   // ===== FOOTER WITH CONTACT INFO =====
   yPosition = checkPageBreak(doc, yPosition, 45);
