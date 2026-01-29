@@ -9,10 +9,10 @@ export function VideoSection() {
         {/* Section heading */}
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            See Neptune in Action
+            See the 25mm Lab Raffia Tape Line in Action
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover how our advanced machinery is transforming plastic recycling worldwide
+            Test before you commit. Use just 4.5-6 kg of material instead of 600 kg. Save ₹34-80 Lakhs annually on wastage and production trials.
           </p>
         </div>
 
@@ -21,8 +21,8 @@ export function VideoSection() {
           <VideoThumbnailPlayer
             thumbnailUrl="https://img.youtube.com/vi/UDEbAwv8d1I/maxresdefault.jpg"
             videoUrl="https://www.youtube.com/embed/UDEbAwv8d1I?autoplay=1"
-            title="Neptune Plastics Technology"
-            description="See our machines in operation"
+            title="25mm Lab Raffia Tape Line"
+            description="See what this machine can do for you"
             aspectRatio="16/9"
             className="rounded-2xl"
           />
