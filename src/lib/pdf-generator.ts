@@ -537,12 +537,12 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
   yPosition += 85;
 
   // ===== CUSTOMER SHOWCASE =====
-  yPosition = checkPageBreak(doc, yPosition, 60);
+  yPosition = checkPageBreak(doc, yPosition, 70);
 
   doc.setTextColor(...darkGray);
   doc.setFontSize(14);
   doc.setFont("helvetica", "bold");
-  doc.text("Trusted by Industry Leaders", 15, yPosition);
+  doc.text("57+ Customers Including Industry Leaders", 15, yPosition);
   yPosition += 10;
 
   // Separator line
@@ -559,12 +559,14 @@ export async function generateROIReport(data: PDFData): Promise<jsPDF> {
     '/logos/owens-corning.jpg',
     '/logos/jj-plastalloy.png',
     '/logos/blend-colours.png',
-    '/logos/tapidor.png'
+    '/logos/tapidor.png',
+    '/logos/alok.jpeg',
+    '/logos/sonali.jpeg'
   ];
 
-  const logosPerRow = 4;
-  const logoWidth = 35;
-  const logoHeight = 20;
+  const logosPerRow = 3;
+  const logoWidth = 40;
+  const logoHeight = 22;
   const logoSpacing = (pageWidth - 30 - (logosPerRow * logoWidth)) / (logosPerRow - 1);
 
   let logoX = 15;
