@@ -154,7 +154,7 @@ export default function CalculatorPage() {
   // Don't render until mounted to avoid hydration issues
   if (!mounted) {
     return (
-      <main className="min-h-screen flex items-center justify-center">
+      <main className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-[#E07A5F] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">Loading calculator...</p>
@@ -164,7 +164,7 @@ export default function CalculatorPage() {
   }
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-white">
       {/* Header */}
       <header className="py-3 sm:py-4 px-4 border-b border-gray-200">
         <div className="max-w-4xl mx-auto flex items-center justify-between">

@@ -201,7 +201,7 @@ export default function ResultsPage() {
   };
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-[#F9FAFB]">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#E5E7EB]">
         <div className="max-w-6xl mx-auto px-4 h-14 sm:h-16 flex items-center justify-between">
