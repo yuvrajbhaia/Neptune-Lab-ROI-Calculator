@@ -8,7 +8,7 @@ import { ColourfulText } from "@/components/ui/colourful-text";
 
 export function Hero() {
   return (
-    <section className="pt-16 sm:pt-24 md:pt-32 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6">
+    <section className="pt-20 sm:pt-28 md:pt-36 pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         {/* Main Content */}
         <motion.div
@@ -18,17 +18,17 @@ export function Hero() {
           className="text-center"
         >
           {/* Main Headline */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-6 leading-tight">
-            Still struggling with <ColourfulText text="COLOUR" /> matching?
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#1A1A1A] mb-8 md:mb-10 leading-tight">
+            Still struggling with <span className="inline-block"><ColourfulText text="COLOUR" /></span> matching?
           </h1>
 
           {/* Subheadline */}
-          <p className="text-lg md:text-xl text-[#6B7280] mb-6 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-[#6B7280] mb-8 md:mb-10 max-w-3xl mx-auto leading-relaxed">
             Lab extrusion lines for masterbatch, Raffia tape, film filament and pipes
           </p>
 
           {/* Secondary text */}
-          <p className="text-2xl md:text-3xl lg:text-4xl text-[#E07A5F] mb-8 font-bold">
+          <p className="text-2xl md:text-3xl lg:text-4xl text-[#E07A5F] mb-10 md:mb-12 font-bold leading-tight">
             Stop losing money on production trials
           </p>
 
