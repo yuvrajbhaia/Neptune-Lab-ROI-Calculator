@@ -10,6 +10,7 @@ import { PainCard } from "@/components/results/pain-card";
 import { BlurredTotal } from "@/components/results/blurred-total";
 import { LeadForm, LeadFormData } from "@/components/results/lead-form";
 import { ExplainModal } from "@/components/results/explain-modal";
+import { DownloadModal } from "@/components/results/download-modal";
 import {
   AllInputs,
   defaultInputs,
@@ -58,6 +59,7 @@ export default function ResultsPage() {
   const [explainModalOpen, setExplainModalOpen] = useState(false);
   const [explainPainId, setExplainPainId] = useState<number>(1);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
 
   // Recalculate results when inputs change
   const recalculateResults = useCallback((newInputs: AllInputs) => {
@@ -392,6 +394,18 @@ export default function ResultsPage() {
           title={results.find((r) => r.id === explainPainId)?.title || ""}
         />
 
+        {/* Download Modal */}
+        <DownloadModal
+          isOpen={isDownloadModalOpen}
+          onClose={() => setIsDownloadModalOpen(false)}
+          onDownload={async () => {
+            await handleDownloadReports();
+            setTimeout(() => setIsDownloadModalOpen(false), 1000);
+          }}
+          isDownloading={isDownloading}
+          leadName={leadData?.name}
+        />
+
         {/* Total Impact */}
         <div className="mb-8 sm:mb-10 md:mb-12">
           <BlurredTotal total={total} isRevealed={true} />
@@ -413,24 +427,15 @@ export default function ResultsPage() {
               Thank You, {leadData?.name}!
             </h3>
             <p className="text-sm sm:text-base text-[#6B7280] mb-4 sm:mb-6 px-2">
-              Your detailed ROI report has been sent to {leadData?.email}
+              Your detailed report is ready to download below.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <Button variant="outline" onClick={() => router.push("/")}>
                 Back to Home
               </Button>
-              <Button onClick={handleDownloadReports} disabled={isDownloading}>
-                {isDownloading ? (
-                  <>
-                    <Download className="mr-2 h-4 w-4 animate-bounce" />
-                    Downloading...
-                  </>
-                ) : (
-                  <>
-                    <Download className="mr-2 h-4 w-4" />
-                    Download Report & Quotation
-                  </>
-                )}
+              <Button onClick={() => setIsDownloadModalOpen(true)}>
+                <Download className="mr-2 h-4 w-4" />
+                Download Report & Quotation
               </Button>
             </div>
           </motion.div>
