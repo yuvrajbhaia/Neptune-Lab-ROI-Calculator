@@ -168,10 +168,18 @@ export default function ResultsPage() {
 
       // Mark as submitted
       setIsSubmitted(true);
+
+      // Automatically start download and show modal
+      await handleDownloadReports();
+      setIsDownloadModalOpen(true);
     } catch (error) {
       console.error("Submission error:", error);
       // Still mark as submitted (graceful degradation)
       setIsSubmitted(true);
+
+      // Automatically start download and show modal even on API error
+      await handleDownloadReports();
+      setIsDownloadModalOpen(true);
     } finally {
       setIsLoading(false);
     }
@@ -426,18 +434,9 @@ export default function ResultsPage() {
             <h3 className="text-lg sm:text-xl font-bold text-[#1A1A1A] mb-2">
               Thank You, {leadData?.name}!
             </h3>
-            <p className="text-sm sm:text-base text-[#6B7280] mb-4 sm:mb-6 px-2">
-              Your detailed report is ready to download below.
+            <p className="text-sm sm:text-base text-[#6B7280] px-2">
+              Your detailed ROI report and quotation have been downloaded.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <Button variant="outline" onClick={() => router.push("/")}>
-                Back to Home
-              </Button>
-              <Button onClick={() => setIsDownloadModalOpen(true)}>
-                <Download className="mr-2 h-4 w-4" />
-                Download Report & Quotation
-              </Button>
-            </div>
           </motion.div>
         )}
 
