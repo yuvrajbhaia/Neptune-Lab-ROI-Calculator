@@ -445,18 +445,12 @@ export default function ResultsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6"
+          className="mt-8 sm:mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto"
         >
           <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 sm:p-6 text-center">
             <p className="text-xs sm:text-sm text-[#6B7280] mb-2">Monthly Savings</p>
             <p className="text-xl sm:text-2xl font-bold text-[#1A1A1A]">
               {formatCurrency(total / 12)}
-            </p>
-          </div>
-          <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 sm:p-6 text-center">
-            <p className="text-xs sm:text-sm text-[#6B7280] mb-2">Payback Period</p>
-            <p className="text-xl sm:text-2xl font-bold text-[#E07A5F]">
-              &lt; 12 Months
             </p>
           </div>
           <div className="bg-white rounded-xl border border-[#E5E7EB] p-5 sm:p-6 text-center">
