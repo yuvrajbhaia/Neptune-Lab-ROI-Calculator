@@ -24,7 +24,7 @@ export function ColourfulText({ text }: { text: string }) {
       const shuffled = [...colors].sort(() => Math.random() - 0.5);
       setCurrentColors(shuffled);
       setCount((prev) => prev + 1);
-    }, 5000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
