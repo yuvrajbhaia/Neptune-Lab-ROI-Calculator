@@ -250,7 +250,7 @@ export default function ResultsPage() {
             Your ROI Analysis Results
           </h1>
           <p className="text-sm sm:text-base text-[#6B7280] max-w-2xl mx-auto px-4">
-            Select only the challenges you currently face. Your ROI calculation will be based on your specific selections.
+            Select only the challenges you currently face.
           </p>
         </motion.div>
 
