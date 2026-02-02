@@ -11,7 +11,7 @@ export function GlobalReach() {
             Global Reach
           </h2>
           <p className="text-lg text-muted max-w-3xl mx-auto">
-            With 2,457+ machines installed across 6 continents, Neptune Plastics has been serving the global plastics industry for 57 years. Our technology powers production facilities worldwide.
+            With 2,457+ machines installed across 6 continents, Neptune Plastics has been serving the global plastics industry for 58 years. Our technology powers production facilities worldwide.
           </p>
         </div>
 
