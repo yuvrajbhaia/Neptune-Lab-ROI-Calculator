@@ -19,7 +19,7 @@ import {
   calculateTotal,
 } from "@/lib/calculations";
 import { formatCurrency } from "@/lib/utils";
-import { ArrowLeft, Download, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Download, CheckCircle2, Zap, Award, TrendingUp, Shield, Lightbulb, Heart } from "lucide-react";
 import { downloadBothPDFs } from "@/lib/pdf-generator";
 
 // Define input configurations for each pain point
@@ -139,6 +139,39 @@ export default function ResultsPage() {
   };
 
   const total = calculateTotal(results);
+
+  const nonTangibleBenefits = [
+    {
+      title: "Faster Time-to-Market",
+      description: "Reduce trial-and-error cycles, get products to market weeks faster than competitors",
+      icon: Zap,
+    },
+    {
+      title: "Enhanced Product Quality",
+      description: "Achieve consistent color matching and superior product quality across all batches",
+      icon: Award,
+    },
+    {
+      title: "Competitive Advantage",
+      description: "Win more customers by offering capabilities and flexibility your competitors can't match",
+      icon: TrendingUp,
+    },
+    {
+      title: "Peace of Mind",
+      description: "Eliminate production anxiety with predictable results and reliable color consistency",
+      icon: Shield,
+    },
+    {
+      title: "Innovation Freedom",
+      description: "Experiment confidently with new materials and techniques without fear of costly failures",
+      icon: Lightbulb,
+    },
+    {
+      title: "Customer Satisfaction",
+      description: "Delight customers with faster turnarounds and the ability to meet their unique requirements",
+      icon: Heart,
+    },
+  ];
 
   const handleFormSubmit = async (data: LeadFormData) => {
     setIsLoading(true);
@@ -418,6 +451,53 @@ export default function ResultsPage() {
         <div className="mb-8 sm:mb-10 md:mb-12">
           <BlurredTotal total={total} isRevealed={true} />
         </div>
+
+        {/* Non-Tangible Benefits Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="mb-8 sm:mb-10 md:mb-12"
+        >
+          {/* Section Heading */}
+          <div className="text-center mb-6 sm:mb-8">
+            <h2 className="text-xl sm:text-2xl font-bold text-[#1A1A1A] mb-2">
+              Beyond the Numbers
+            </h2>
+            <p className="text-sm sm:text-base text-[#6B7280] max-w-2xl mx-auto">
+              Additional benefits you'll experience with Neptune Lab
+            </p>
+          </div>
+
+          {/* Benefits Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {nonTangibleBenefits.map((benefit, index) => {
+              const IconComponent = benefit.icon;
+              return (
+                <motion.div
+                  key={benefit.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.2 + index * 0.1 }}
+                  className="bg-white rounded-xl border border-[#E5E7EB] p-5 sm:p-6 hover:border-[#E07A5F]/30 transition-all duration-200"
+                >
+                  {/* Icon */}
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#E07A5F]/10 rounded-xl flex items-center justify-center mb-4">
+                    <IconComponent className="w-5 h-5 sm:w-6 sm:h-6 text-[#E07A5F]" />
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="text-base sm:text-lg font-semibold text-[#1A1A1A] mb-2">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-sm text-[#6B7280] leading-relaxed">
+                    {benefit.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
 
         {/* Lead Form or Success Message */}
         {!isSubmitted ? (
