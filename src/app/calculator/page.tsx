@@ -182,7 +182,7 @@ export default function CalculatorPage() {
             </div>
           </Link>
           <button
-            onClick={() => router.push("/")}
+            onClick={() => { window.location.href = "https://neptuneplasticlab.in"; }}
             className="text-gray-500 hover:text-gray-700 transition-colors text-xs sm:text-sm px-2 sm:px-3"
           >
             Exit
